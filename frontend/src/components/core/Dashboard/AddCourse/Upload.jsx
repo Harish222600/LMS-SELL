@@ -4,17 +4,23 @@ import { FiUploadCloud } from "react-icons/fi"
 import { useSelector } from "react-redux"
 import { uploadFile, ResumableUploader } from "../../../../utils/directUpload"
 import VideoUploadProgress from "../../../common/VideoUploadProgress"
+import { useUpload } from "../../../../contexts/UploadContext"
 
 
 
 export default function Upload({ name, label, register, setValue, errors, video = false, viewData = null, editData = null, setImageFile = null, subSectionId = null }) {
   const { token } = useSelector((state) => state.auth)
+  const uploadContext = useUpload()
   const [selectedFile, setSelectedFile] = useState(null)
   const [previewSource, setPreviewSource] = useState("")
   const [isLoadingPreview, setIsLoadingPreview] = useState(false)
   const [previewError, setPreviewError] = useState(null)
   const inputRef = useRef(null)
   const videoRef = useRef(null)
+  
+  // Upload context integration
+  const [currentUploadId, setCurrentUploadId] = useState(null)
+  const [abortController, setAbortController] = useState(null)
   
   // Debug props
   console.log("📤 Upload Component Props:", {
@@ -85,6 +91,14 @@ export default function Upload({ name, label, register, setValue, errors, video 
       
       const folder = video ? 'videos' : 'images'
       
+      // Create AbortController for cancellation
+      const controller = new AbortController()
+      setAbortController(controller)
+      
+      // Generate unique upload ID and register with context
+      const uploadId = uploadContext.generateUploadId()
+      setCurrentUploadId(uploadId)
+      
       // Check if we need resumable upload
       const needsResumableUpload = file.size > 50 * 1024 * 1024 // 50MB
       
@@ -92,6 +106,9 @@ export default function Upload({ name, label, register, setValue, errors, video 
         console.log('📦 Using resumable upload for large file')
         
         const resumableUploader = new ResumableUploader(file, folder, {
+          uploadId,
+          abortController: controller,
+          uploadContext,
           onProgress: (progressData) => {
             setUploadProgress(progressData.progress)
             console.log('Upload progress:', progressData)
@@ -101,6 +118,11 @@ export default function Upload({ name, label, register, setValue, errors, video 
             setUploadError(error.message)
             setUploadStatus('error')
             setIsUploading(false)
+            
+            // Unregister from context
+            if (uploadId) {
+              uploadContext.unregisterUpload(uploadId)
+            }
           },
           onComplete: (result) => {
             console.log('Upload completed:', result)
@@ -111,6 +133,11 @@ export default function Upload({ name, label, register, setValue, errors, video 
             
             // Set the result URL in the form
             setValue(name, result.secure_url)
+            
+            // Unregister from context
+            if (uploadId) {
+              uploadContext.unregisterUpload(uploadId)
+            }
           }
         })
         
@@ -121,6 +148,9 @@ export default function Upload({ name, label, register, setValue, errors, video 
         console.log('🚀 Using direct upload for small file')
         
         const result = await uploadFile(file, folder, {
+          uploadId,
+          abortController: controller,
+          uploadContext,
           onProgress: (progressData) => {
             if (progressData) {
               setUploadProgress(progressData.progress || 50) // Fallback progress for direct uploads
@@ -136,13 +166,31 @@ export default function Upload({ name, label, register, setValue, errors, video 
         
         // Set the result URL in the form
         setValue(name, result.secure_url)
+        
+        // Unregister from context
+        if (uploadId) {
+          uploadContext.unregisterUpload(uploadId)
+        }
       }
       
     } catch (error) {
       console.error('❌ Upload failed:', error)
-      setUploadError(error.message)
-      setUploadStatus('error')
+      
+      if (error.name === 'AbortError' || error.message === 'Upload cancelled') {
+        console.log('🚫 Upload was cancelled')
+        setUploadStatus('cancelled')
+        setUploadError('Upload cancelled')
+      } else {
+        setUploadError(error.message)
+        setUploadStatus('error')
+      }
+      
       setIsUploading(false)
+      
+      // Unregister from context
+      if (currentUploadId) {
+        uploadContext.unregisterUpload(currentUploadId)
+      }
     }
   }
 
@@ -430,14 +478,52 @@ export default function Upload({ name, label, register, setValue, errors, video 
     }
   }, [viewData, editData, video, selectedFile, token, subSectionId])
 
-  // Clean up object URLs on unmount
+  // Clean up object URLs on unmount and cancel uploads
   useEffect(() => {
     return () => {
       if (previewSource && previewSource.startsWith('blob:')) {
         URL.revokeObjectURL(previewSource)
       }
+      
+      // Cancel any ongoing upload when component unmounts
+      if (currentUploadId && uploadContext) {
+        uploadContext.cancelUpload(currentUploadId)
+      }
+      
+      // Abort any ongoing request
+      if (abortController) {
+        abortController.abort()
+      }
     }
-  }, [previewSource])
+  }, [previewSource, currentUploadId, uploadContext, abortController])
+
+  // Expose cancellation method for external use (e.g., from course builder)
+  useEffect(() => {
+    const cancelCurrentUpload = () => {
+      if (currentUploadId && uploadContext) {
+        console.log('🚫 External cancellation requested for upload:', currentUploadId)
+        uploadContext.cancelUpload(currentUploadId)
+      }
+      
+      if (abortController) {
+        abortController.abort()
+      }
+      
+      resetUploadState()
+    }
+
+    // Store the cancel function on the component instance
+    if (typeof window !== 'undefined') {
+      window[`cancelUpload_${name}`] = cancelCurrentUpload
+    }
+
+    return () => {
+      // Cleanup the global reference
+      if (typeof window !== 'undefined') {
+        delete window[`cancelUpload_${name}`]
+      }
+    }
+  }, [currentUploadId, uploadContext, abortController, name])
 
   return (
     <div className="flex flex-col space-y-2">

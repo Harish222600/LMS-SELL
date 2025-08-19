@@ -12,10 +12,12 @@ import { RxDropdownMenu } from "react-icons/rx"
 import { createSection, updateSection, deleteSection, createSubSection, updateSubSection, deleteSubSection, getFullDetailsOfCourse } from "../../../services/operations/courseDetailsAPI"
 import ConfirmationModal from "../../../components/common/ConfirmationModal"
 import AdminSubSectionModal from "./AdminSubSectionModal"
+import { useUpload } from "../../../contexts/UploadContext"
 
 export default function AdminCourseBuilder({ course, onCourseUpdate }) {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm()
   const { token } = useSelector((state) => state.auth)
+  const uploadContext = useUpload()
   
   const [loading, setLoading] = useState(false)
   const [editSectionName, setEditSectionName] = useState(null)
@@ -570,13 +572,37 @@ export default function AdminCourseBuilder({ course, onCourseUpdate }) {
   const discardChanges = () => {
     setConfirmationModal({
       text1: "Discard Changes?",
-      text2: "All unsaved changes will be lost. This action cannot be undone.",
+      text2: "All unsaved changes and ongoing uploads will be cancelled. This action cannot be undone.",
       btn1Text: "Discard",
       btn2Text: "Cancel",
       btn1Handler: () => {
+        console.log('🚫 Discarding changes - cancelling all uploads')
+        
+        // Cancel all ongoing uploads using the upload context
+        if (uploadContext && uploadContext.cancelAllUploads) {
+          uploadContext.cancelAllUploads()
+        }
+        
+        // Also try to cancel uploads using the global window method (fallback)
+        try {
+          // Cancel uploads for video fields that might be in use
+          const videoFieldNames = ['videoUrl', 'video', 'videoFile']
+          videoFieldNames.forEach(fieldName => {
+            if (typeof window !== 'undefined' && window[`cancelUpload_${fieldName}`]) {
+              console.log(`🚫 Cancelling upload for field: ${fieldName}`)
+              window[`cancelUpload_${fieldName}`]()
+            }
+          })
+        } catch (error) {
+          console.error('Error cancelling uploads via window methods:', error)
+        }
+        
+        // Reset course data to original state
         setCourseData(JSON.parse(JSON.stringify(originalCourseData)))
         setHasUnsavedChanges(false)
         setConfirmationModal(null)
+        
+        toast.success('Changes discarded and uploads cancelled')
       },
       btn2Handler: () => setConfirmationModal(null),
     })

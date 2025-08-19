@@ -142,6 +142,15 @@ const handleUploadComplete = async (req, res) => {
       });
     }
 
+    // Check if upload was cancelled
+    if (uploadMetadata.status === 'cancelled') {
+      console.log('🚫 Upload completion rejected - upload was cancelled:', uploadId);
+      return res.status(400).json({
+        success: false,
+        message: 'Upload was cancelled and cannot be completed'
+      });
+    }
+
     // Verify the file was actually uploaded
     try {
       const headCommand = new HeadObjectCommand({
@@ -283,6 +292,169 @@ const getUploadStatus = async (req, res) => {
 };
 
 /**
+ * Cancel ongoing upload
+ */
+const cancelUpload = async (req, res) => {
+  try {
+    const { uploadId } = req.params;
+    
+    console.log('🚫 Cancelling upload:', uploadId);
+    
+    const uploadMetadata = uploadTracker.get(uploadId);
+    if (!uploadMetadata) {
+      return res.status(404).json({
+        success: false,
+        message: 'Upload not found'
+      });
+    }
+
+    // Check if user owns this upload
+    if (uploadMetadata.userId !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: 'Access denied'
+      });
+    }
+
+    // Mark upload as cancelled
+    uploadMetadata.status = 'cancelled';
+    uploadMetadata.cancelledAt = new Date();
+    uploadTracker.set(uploadId, uploadMetadata);
+
+    // Try to delete any partially uploaded file from S3
+    try {
+      const deleteCommand = new DeleteObjectCommand({
+        Bucket: uploadMetadata.bucket,
+        Key: uploadMetadata.filePath
+      });
+      
+      await s3Client.send(deleteCommand);
+    } catch (deleteError) {
+      console.warn('Failed to delete cancelled upload file from S3:', deleteError);
+      // Continue anyway - file might not exist yet
+    }
+
+    console.log('✅ Upload cancelled successfully:', uploadId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Upload cancelled successfully',
+      data: {
+        uploadId,
+        status: 'cancelled',
+        cancelledAt: uploadMetadata.cancelledAt
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Error cancelling upload:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to cancel upload',
+      error: error.message
+    });
+  }
+};
+
+/**
+ * Cancel multiple uploads
+ */
+const cancelMultipleUploads = async (req, res) => {
+  try {
+    const { uploadIds } = req.body;
+    
+    if (!Array.isArray(uploadIds) || uploadIds.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'uploadIds array is required'
+      });
+    }
+
+    console.log('🚫 Cancelling multiple uploads:', uploadIds);
+
+    const results = [];
+    
+    for (const uploadId of uploadIds) {
+      try {
+        const uploadMetadata = uploadTracker.get(uploadId);
+        
+        if (!uploadMetadata) {
+          results.push({
+            uploadId,
+            success: false,
+            message: 'Upload not found'
+          });
+          continue;
+        }
+
+        // Check if user owns this upload
+        if (uploadMetadata.userId !== req.user.id) {
+          results.push({
+            uploadId,
+            success: false,
+            message: 'Access denied'
+          });
+          continue;
+        }
+
+        // Mark upload as cancelled
+        uploadMetadata.status = 'cancelled';
+        uploadMetadata.cancelledAt = new Date();
+        uploadTracker.set(uploadId, uploadMetadata);
+
+        // Try to delete any partially uploaded file from S3
+        try {
+          const deleteCommand = new DeleteObjectCommand({
+            Bucket: uploadMetadata.bucket,
+            Key: uploadMetadata.filePath
+          });
+          
+          await s3Client.send(deleteCommand);
+        } catch (deleteError) {
+          console.warn(`Failed to delete cancelled upload file ${uploadId} from S3:`, deleteError);
+        }
+
+        results.push({
+          uploadId,
+          success: true,
+          message: 'Upload cancelled successfully'
+        });
+
+      } catch (error) {
+        console.error(`Error cancelling upload ${uploadId}:`, error);
+        results.push({
+          uploadId,
+          success: false,
+          message: error.message
+        });
+      }
+    }
+
+    const successCount = results.filter(r => r.success).length;
+    console.log(`✅ Cancelled ${successCount}/${uploadIds.length} uploads`);
+
+    res.status(200).json({
+      success: true,
+      message: `Cancelled ${successCount}/${uploadIds.length} uploads`,
+      data: {
+        results,
+        totalRequested: uploadIds.length,
+        successCount,
+        failureCount: uploadIds.length - successCount
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Error cancelling multiple uploads:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to cancel uploads',
+      error: error.message
+    });
+  }
+};
+
+/**
  * Delete uploaded file
  */
 const deleteUpload = async (req, res) => {
@@ -390,6 +562,8 @@ module.exports = {
   generateSignedUrl,
   handleUploadComplete,
   getUploadStatus,
+  cancelUpload,
+  cancelMultipleUploads,
   deleteUpload,
   cleanupExpiredUploads
 };
