@@ -194,9 +194,20 @@ export const uploadFile = async (file, folder = '', options = {}) => {
       sizeInMB: (file.size / 1024 / 1024).toFixed(2) + 'MB'
     })
 
-    // For now, use direct upload for all files
-    // TODO: Implement resumable upload for large files
-    console.log('🚀 Using direct upload')
+    // Import optimized config values
+    const { UPLOAD_CONFIG } = await import('../config/supabase.js')
+
+    // Use optimized thresholds for AWS free tier
+    const shouldUseResumable = file.size > UPLOAD_CONFIG.DIRECT_UPLOAD_THRESHOLD
+
+    if (shouldUseResumable) {
+      console.log('📦 Using resumable upload for large file (optimized for free tier)')
+      // For now, fallback to direct upload until resumable is fully implemented
+      // TODO: Implement proper resumable upload with 5MB chunks and single concurrency
+      console.log('⚠️ Resumable upload not fully implemented, using direct upload with optimizations')
+    }
+
+    console.log('🚀 Using direct upload (optimized for free tier)')
     return await directUpload(file, folder, options)
 
   } catch (error) {

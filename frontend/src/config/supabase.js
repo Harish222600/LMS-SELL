@@ -53,17 +53,17 @@ export const UPLOAD_CONFIG = {
   IMAGE_MAX_SIZE: 10 * 1024 * 1024,    // 10MB
   VIDEO_MAX_SIZE: 2 * 1024 * 1024 * 1024, // 2GB
   DOCUMENT_MAX_SIZE: 50 * 1024 * 1024, // 50MB
-  
-  // Upload strategy thresholds
-  DIRECT_UPLOAD_THRESHOLD: 50 * 1024 * 1024, // 50MB - files larger will use resumable
-  CHUNK_SIZE: 25 * 1024 * 1024, // 25MB chunks for resumable uploads
-  
+
+  // Upload strategy thresholds (optimized for AWS free tier)
+  DIRECT_UPLOAD_THRESHOLD: 10 * 1024 * 1024, // 10MB - files larger will use resumable (reduced for free tier)
+  CHUNK_SIZE: 5 * 1024 * 1024, // 5MB chunks for resumable uploads (reduced for free tier bandwidth)
+
   // Retry configuration
   MAX_RETRIES: 3,
   RETRY_DELAY_BASE: 1000, // Base delay for exponential backoff (ms)
-  
-  // Concurrent upload settings
-  MAX_CONCURRENT_CHUNKS: 3, // Maximum parallel chunk uploads
+
+  // Concurrent upload settings (optimized for free tier)
+  MAX_CONCURRENT_CHUNKS: 1, // Maximum parallel chunk uploads (reduced to prevent network saturation)
 }
 
 // Allowed file types
