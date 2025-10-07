@@ -30,7 +30,7 @@ const getSuggestionForError = (statusCode, fileSize) => {
 // ================ Update SubSection ================
 exports.updateSubSection = async (req, res) => {
     try {
-        const { sectionId, subSectionId, title, description, questions, videoUrl } = req.body;
+        const { sectionId, subSectionId, title, description, questions, videoUrl, videoDuration } = req.body;
 
         // validation
         if (!subSectionId) {
@@ -64,7 +64,15 @@ exports.updateSubSection = async (req, res) => {
             // Use direct upload URL
             console.log('Using direct upload URL for video (update):', videoUrl);
             subSection.videoUrl = videoUrl;
-            subSection.timeDuration = 0; // Duration will be extracted later if needed
+            
+            // Set duration from client-side upload if provided
+            if (videoDuration !== undefined && videoDuration !== null) {
+                subSection.timeDuration = parseFloat(videoDuration) || 0;
+                console.log('✅ Setting video duration from client-side upload:', subSection.timeDuration);
+            } else {
+                subSection.timeDuration = 0;
+                console.log('⚠️ No duration provided for client-side upload, setting to 0');
+            }
         } else if (req.file) {
             try {
                 const video = req.file;
@@ -181,7 +189,22 @@ exports.updateSubSection = async (req, res) => {
         }
 
         // save data to DB
+        console.log('💾 Updating SubSection with data:', {
+            id: subSection._id,
+            title: subSection.title,
+            timeDuration: subSection.timeDuration,
+            description: subSection.description,
+            videoUrl: subSection.videoUrl
+        });
+        
         await subSection.save();
+        
+        console.log('✅ SubSection updated successfully:', {
+            id: subSection._id,
+            title: subSection.title,
+            timeDuration: subSection.timeDuration,
+            videoUrl: subSection.videoUrl
+        });
 
         const updatedSection = await Section.findById(sectionId).populate("subSection");
 
@@ -234,7 +257,7 @@ exports.updateSubSection = async (req, res) => {
 exports.createSubSection = async (req, res) => {
     try {
         // extract data
-        const { title, description, sectionId, questions, videoUrl } = req.body;
+        const { title, description, sectionId, questions, videoUrl, videoDuration } = req.body;
 
         // Debug logging
         console.log('📝 CREATE SUBSECTION - Request body:', req.body);
@@ -285,7 +308,15 @@ exports.createSubSection = async (req, res) => {
             // Use direct upload URL
             console.log('Using direct upload URL for video:', videoUrl);
             finalVideoUrl = videoUrl;
-            timeDuration = 0; // Duration will be extracted later if needed
+            
+            // Set duration from client-side upload if provided
+            if (videoDuration !== undefined && videoDuration !== null) {
+                timeDuration = parseFloat(videoDuration) || 0;
+                console.log('✅ Setting video duration from client-side upload:', timeDuration);
+            } else {
+                timeDuration = 0;
+                console.log('⚠️ No duration provided for client-side upload, setting to 0');
+            }
         } else if (videoFile) {
             try {
                 console.log('Starting video upload to Supabase...');
@@ -407,11 +438,25 @@ exports.createSubSection = async (req, res) => {
         }
 
         // create entry in DB
+        console.log('💾 Creating SubSection with data:', {
+            title,
+            timeDuration,
+            description,
+            videoUrl: finalVideoUrl
+        });
+        
         const SubSectionDetails = await SubSection.create({
             title, 
             timeDuration, 
             description, 
             videoUrl: finalVideoUrl 
+        });
+        
+        console.log('✅ SubSection created successfully:', {
+            id: SubSectionDetails._id,
+            title: SubSectionDetails.title,
+            timeDuration: SubSectionDetails.timeDuration,
+            videoUrl: SubSectionDetails.videoUrl
         });
 
         // Handle quiz attachment

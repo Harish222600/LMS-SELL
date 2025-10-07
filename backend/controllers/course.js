@@ -259,10 +259,21 @@ exports.getAllCourses = async (req, res) => {
                 path: "courseContent",
                 populate: {
                     path: "subSection",
-                    select: "timeDuration"
+                    select: "title timeDuration videoUrl"
                 }
             })
             .exec();
+
+        // DEBUG: Check what's actually in the database
+        const SubSection = require('../models/subSection');
+        const allSubSections = await SubSection.find({}, 'title timeDuration videoUrl').limit(10);
+        console.log('🔍 DEBUG: Sample SubSections from database:', allSubSections.map(sub => ({
+            title: sub.title,
+            timeDuration: sub.timeDuration,
+            timeDurationType: typeof sub.timeDuration,
+            hasVideo: !!sub.videoUrl
+        })));
+
 
         // Add average rating and total duration to each course
         const coursesWithRatingAndDuration = await Promise.all(
@@ -271,11 +282,19 @@ exports.getAllCourses = async (req, res) => {
                 
                 // Calculate total duration
                 let totalDurationInSeconds = 0;
+                console.log('🔍 DEBUG: Calculating duration for course:', course.courseName)
+                
                 if (course.courseContent) {
-                    course.courseContent.forEach((content) => {
+                    course.courseContent.forEach((content, sectionIndex) => {
                         if (content.subSection) {
-                            content.subSection.forEach((subSection) => {
+                            console.log(`📁 Section ${sectionIndex + 1}: ${content.sectionName || 'Unnamed'}`)
+                            content.subSection.forEach((subSection, subIndex) => {
                                 const timeDurationInSeconds = parseFloat(subSection.timeDuration);
+                                console.log(`  📹 SubSection ${subIndex + 1}:`, {
+                                    timeDuration: subSection.timeDuration,
+                                    parsed: timeDurationInSeconds,
+                                    isValid: !isNaN(timeDurationInSeconds) && timeDurationInSeconds > 0
+                                })
                                 if (!isNaN(timeDurationInSeconds) && timeDurationInSeconds > 0) {
                                     totalDurationInSeconds += timeDurationInSeconds;
                                 }
@@ -284,7 +303,9 @@ exports.getAllCourses = async (req, res) => {
                     });
                 }
                 
+                console.log('⏱️ Total duration in seconds:', totalDurationInSeconds)
                 const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
+                console.log('📊 Formatted total duration:', totalDuration)
                 
                 return {
                     ...course.toObject(),
@@ -359,17 +380,28 @@ exports.getCourseDetails = async (req, res) => {
         // }
 
         // console.log('courseDetails -> ', courseDetails)
+        
         let totalDurationInSeconds = 0
-        courseDetails.courseContent.forEach((content) => {
-            content.subSection.forEach((subSection) => {
+        console.log('🔍 DEBUG: Calculating course duration for course:', courseId)
+        
+        courseDetails.courseContent.forEach((content, sectionIndex) => {
+            console.log(`📁 Section ${sectionIndex + 1}:`, content.sectionName)
+            content.subSection.forEach((subSection, subIndex) => {
                 const timeDurationInSeconds = parseFloat(subSection.timeDuration)
+                console.log(`  📹 SubSection ${subIndex + 1} (${subSection.title}):`, {
+                    timeDuration: subSection.timeDuration,
+                    parsed: timeDurationInSeconds,
+                    isValid: !isNaN(timeDurationInSeconds) && timeDurationInSeconds > 0
+                })
                 if (!isNaN(timeDurationInSeconds) && timeDurationInSeconds > 0) {
                     totalDurationInSeconds += timeDurationInSeconds
                 }
             })
         })
 
+        console.log('⏱️ Total duration in seconds:', totalDurationInSeconds)
         const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+        console.log('📊 Formatted total duration:', totalDuration)
 
         // Calculate average rating
         const ratingData = await calculateAverageRating(courseId);

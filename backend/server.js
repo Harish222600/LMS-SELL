@@ -37,6 +37,7 @@ const recycleBinRoutes = require('./routes/recycleBin');
 const uploadRoutes = require('./routes/upload');
 const chunkedUploadRoutes = require('./routes/chunkedUpload');
 const videoPlaybackRoutes = require('./routes/videoPlayback');
+const fixDurationsRoutes = require('./routes/fixDurations');
 
 // middleware 
 app.use(cookieParser());
@@ -295,6 +296,8 @@ app.use('/api/v1/upload', uploadRoutes);
 app.use('/api/v1/chunked-upload', chunkedUploadRoutes);
 // Video Playback Routes
 app.use('/api/v1/video', videoPlaybackRoutes);
+// Fix Durations Routes (temporary)
+app.use('/api/v1/fix', fixDurationsRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {

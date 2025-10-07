@@ -129,6 +129,8 @@ export default function AdminSubSectionModal({
       // Store the video file or URL for batch save
       videoFile: data.lectureVideo instanceof File ? data.lectureVideo : null,
       videoUrlDirect: typeof data.lectureVideo === 'string' ? data.lectureVideo : null,
+      // Include video duration if available
+      videoDuration: data.lectureVideoDuration,
       isNew: true
     }
     
@@ -139,6 +141,7 @@ export default function AdminSubSectionModal({
       hasVideoFile: !!newSubSection.videoFile,
       hasVideoUrlDirect: !!newSubSection.videoUrlDirect,
       videoUrlDirect: newSubSection.videoUrlDirect,
+      videoDuration: newSubSection.videoDuration,
       originalVideoData: data.lectureVideo,
       videoType: typeof data.lectureVideo,
       videoFileName: newSubSection.videoFile ? newSubSection.videoFile.name : 'No file',

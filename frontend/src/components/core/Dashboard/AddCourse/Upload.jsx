@@ -25,6 +25,33 @@ export default function Upload({ name, label, register, setValue, errors, video 
     subSectionId,
     hasToken: !!token
   })
+
+  // Handle existing video data when component mounts or data changes
+  useEffect(() => {
+    const existingVideoUrl = viewData || editData
+    console.log("🔍 Upload useEffect triggered:", {
+      existingVideoUrl,
+      viewData,
+      editData,
+      name,
+      video
+    })
+    
+    if (existingVideoUrl && typeof existingVideoUrl === 'string') {
+      console.log("📹 Setting existing video preview:", existingVideoUrl)
+      setPreviewSource(existingVideoUrl)
+      setValue(name, existingVideoUrl)
+      setUploadStatus('completed')
+      
+      // Set upload result to show the video is already uploaded
+      setUploadResult({
+        secure_url: existingVideoUrl,
+        resource_type: video ? 'video' : 'image'
+      })
+    } else {
+      console.log("⚠️ No existing video URL found or invalid format")
+    }
+  }, [viewData, editData, name, setValue, video])
   
   // CLIENT-SIDE Upload state management
   const [isUploading, setIsUploading] = useState(false)
@@ -97,6 +124,17 @@ export default function Upload({ name, label, register, setValue, errors, video 
       
       // Set the result URL in the form
       setValue(name, result.secure_url)
+      
+      // Store duration for videos (if available)
+      if (video && result.duration !== undefined) {
+        // Store duration in a hidden field or component state for later use
+        setValue(`${name}Duration`, result.duration)
+        console.log('📹 Video duration stored:', result.duration, 'seconds')
+        console.log('📹 Duration field name:', `${name}Duration`)
+        console.log('📹 Duration type:', typeof result.duration)
+      } else if (video) {
+        console.log('⚠️ Video upload completed but no duration found in result:', result)
+      }
       
     } catch (error) {
       console.error('❌ CLIENT-SIDE upload failed:', error)

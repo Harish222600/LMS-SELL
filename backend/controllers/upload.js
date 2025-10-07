@@ -190,7 +190,13 @@ const handleUploadComplete = async (req, res) => {
     // Extract video metadata if it's a video
     if (uploadMetadata.isVideo) {
       try {
-        console.log('🎬 Extracting video metadata...');
+        console.log('🎬 Extracting video metadata for:', uploadMetadata.fileName);
+        console.log('📊 Video details:', {
+          bucket: uploadMetadata.bucket,
+          filePath: uploadMetadata.filePath,
+          fileSize: `${(uploadMetadata.fileSize / (1024 * 1024)).toFixed(2)}MB`,
+          mimeType: uploadMetadata.mimeType
+        });
         
         // Download the file to extract metadata
         const getCommand = new GetObjectCommand({
@@ -198,8 +204,10 @@ const handleUploadComplete = async (req, res) => {
           Key: uploadMetadata.filePath
         });
         
+        console.log('📥 Downloading video from S3 for metadata extraction...');
         const response = await s3Client.send(getCommand);
         const videoBuffer = Buffer.from(await response.Body.transformToByteArray());
+        console.log(`✅ Video downloaded: ${(videoBuffer.length / (1024 * 1024)).toFixed(2)}MB`);
         
         const videoMetadata = await extractVideoMetadata(videoBuffer, {
           originalname: uploadMetadata.fileName,
@@ -209,10 +217,16 @@ const handleUploadComplete = async (req, res) => {
         
         result.duration = videoMetadata.duration;
         result.metadata = videoMetadata;
-        console.log(`✅ Video duration extracted: ${videoMetadata.duration}s`);
+        console.log(`✅ Video duration extracted and set: ${videoMetadata.duration}s`);
+        console.log(`📋 Extraction method: ${videoMetadata.extractionMethod}`);
       } catch (metadataError) {
-        console.warn('⚠️ Failed to extract video metadata:', metadataError.message);
-        result.duration = 0;
+        console.error('❌ Failed to extract video metadata:', metadataError);
+        console.error('Stack trace:', metadataError.stack);
+        // Use size estimation as fallback
+        const { estimateDurationFromSize } = require('../utils/videoMetadata');
+        const estimatedDuration = estimateDurationFromSize(uploadMetadata.fileSize, uploadMetadata.mimeType);
+        result.duration = estimatedDuration;
+        console.log(`⚠️ Using estimated duration as fallback: ${estimatedDuration}s`);
       }
     }
 

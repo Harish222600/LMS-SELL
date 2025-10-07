@@ -401,11 +401,26 @@ exports.getEnrolledCourses = async (req, res) => {
             let totalDurationInSeconds = 0
             let SubsectionLength = 0
             
+            console.log('🔍 DEBUG: Calculating enrolled course duration for:', course.courseName)
+            
             for (var j = 0; j < course.courseContent.length; j++) {
-                totalDurationInSeconds += course.courseContent[j].subSection.reduce((acc, curr) => acc + parseInt(curr.timeDuration), 0)
-                course.totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+                console.log(`📁 Section ${j + 1}: ${course.courseContent[j].sectionName || 'Unnamed'}`)
+                totalDurationInSeconds += course.courseContent[j].subSection.reduce((acc, curr) => {
+                    const duration = parseFloat(curr.timeDuration) || 0;
+                    console.log(`  📹 SubSection (${curr.title}):`, {
+                        timeDuration: curr.timeDuration,
+                        parsed: duration,
+                        isValid: duration > 0
+                    })
+                    return acc + duration;
+                }, 0)
                 SubsectionLength += course.courseContent[j].subSection.length
             }
+            
+            console.log('⏱️ Total duration in seconds:', totalDurationInSeconds)
+            // Set total duration after calculating for all sections
+            course.totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+            console.log('📊 Formatted total duration:', course.totalDuration)
 
             let courseProgress = await CourseProgress.findOne({
                 courseID: course._id,

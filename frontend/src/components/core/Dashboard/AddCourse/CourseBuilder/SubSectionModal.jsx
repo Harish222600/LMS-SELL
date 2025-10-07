@@ -103,6 +103,20 @@ export default function SubSectionModal({ modalData, setModalData, add = false, 
         // Direct upload URL or changed URL
         formData.append("videoUrl", currentValues.lectureVideo)
         console.log("Video URL updated:", currentValues.lectureVideo)
+        
+        // Include video duration if available
+        const videoDuration = currentValues.lectureVideoDuration
+        console.log("🔍 DEBUG: Checking for video duration (update):", {
+          lectureVideoDuration: currentValues.lectureVideoDuration,
+          allCurrentValues: currentValues,
+          videoDurationExists: videoDuration !== undefined && videoDuration !== null
+        })
+        if (videoDuration !== undefined && videoDuration !== null) {
+          formData.append("videoDuration", videoDuration)
+          console.log("✅ Video duration included for update:", videoDuration, "seconds")
+        } else {
+          console.log("⚠️ No video duration found for update")
+        }
       }
       
       // Log FormData contents for debugging
@@ -187,6 +201,20 @@ export default function SubSectionModal({ modalData, setModalData, add = false, 
         // Direct upload URL - already uploaded
         formData.append("videoUrl", data.lectureVideo)
         console.log("Creating subsection with direct upload URL:", data.lectureVideo)
+        
+        // Include video duration if available
+        const videoDuration = data.lectureVideoDuration
+        console.log("🔍 DEBUG: Checking for video duration:", {
+          lectureVideoDuration: data.lectureVideoDuration,
+          allFormData: data,
+          videoDurationExists: videoDuration !== undefined && videoDuration !== null
+        })
+        if (videoDuration !== undefined && videoDuration !== null) {
+          formData.append("videoDuration", videoDuration)
+          console.log("✅ Video duration included for creation:", videoDuration, "seconds")
+        } else {
+          console.log("⚠️ No video duration found for creation")
+        }
       } else if (data.lectureVideo) {
         // Handle other video data types
         console.log("Video data type:", typeof data.lectureVideo, data.lectureVideo)

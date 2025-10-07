@@ -348,6 +348,14 @@ export default function AdminCourseBuilder({ course, onCourseUpdate }) {
                       } else if (subSection.videoUrlDirect) {
                         console.log("Using existing video URL:", subSection.videoUrlDirect)
                         subSectionFormData.append('videoUrl', subSection.videoUrlDirect)
+                        
+                        // Include video duration if available
+                        if (subSection.videoDuration !== undefined && subSection.videoDuration !== null) {
+                          subSectionFormData.append('videoDuration', subSection.videoDuration)
+                          console.log("✅ Video duration included:", subSection.videoDuration, "seconds")
+                        } else {
+                          console.log("⚠️ No video duration found for subsection:", subSection.title)
+                        }
                       }
                       
                       if (subSection.quiz) {
