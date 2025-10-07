@@ -59,43 +59,64 @@ const getS3FolderForFileType = (mimetype, customFolder, originalname) => {
     return S3_FOLDERS.DOCUMENTS; // Default fallback
 };
 
+// Function to get S3 bucket name for file type (returns the main bucket)
+const getS3BucketForFileType = (mimetype, customFolder, originalname) => {
+    // For now, all files go to the same bucket with different folders
+    // This can be expanded later to use different buckets for different file types
+    return process.env.AWS_S3_BUCKET_NAME || 'beejas3';
+};
+
 // Function to validate file
 const validateFile = (file, folder) => {
     const errors = [];
     
-    if (!file || !file.buffer) {
+    // For signed URL generation, we only have metadata (no buffer)
+    // For actual file upload, we have the buffer
+    if (!file) {
         errors.push('No file provided');
         return { isValid: false, errors };
     }
 
-    // Check file size based on type
-    let maxSize = FILE_SIZE_LIMITS.DOCUMENT; // Default
-    
-    if (file.mimetype.startsWith('image/')) {
-        maxSize = FILE_SIZE_LIMITS.IMAGE;
-    } else if (file.mimetype.startsWith('video/') || isVideoFile(file.mimetype, file.originalname)) {
-        maxSize = FILE_SIZE_LIMITS.VIDEO;
+    // Check file size based on type (if size is provided)
+    if (file.size !== undefined) {
+        let maxSize = FILE_SIZE_LIMITS.DOCUMENT; // Default
+        
+        if (file.mimetype && file.mimetype.startsWith('image/')) {
+            maxSize = FILE_SIZE_LIMITS.IMAGE;
+        } else if (file.mimetype && (file.mimetype.startsWith('video/') || isVideoFile(file.mimetype, file.originalname))) {
+            maxSize = FILE_SIZE_LIMITS.VIDEO;
+        }
+
+        if (file.size > maxSize) {
+            errors.push(`File size exceeds limit of ${Math.round(maxSize / (1024 * 1024))}MB`);
+        }
     }
 
-    if (file.size > maxSize) {
-        errors.push(`File size exceeds limit of ${Math.round(maxSize / (1024 * 1024))}MB`);
+    // Check file type (if mimetype is provided)
+    if (file.mimetype) {
+        const isImageType = file.mimetype.startsWith('image/');
+        const isValidType = 
+            isImageType ||
+            ALLOWED_FILE_TYPES.VIDEOS.includes(file.mimetype) ||
+            ALLOWED_FILE_TYPES.DOCUMENTS.includes(file.mimetype) ||
+            isVideoFile(file.mimetype, file.originalname);
+
+        if (!isValidType) {
+            errors.push(`File type ${file.mimetype} is not allowed`);
+        }
     }
 
-    // Check file type - Allow any image type for profile uploads
-    const isImageType = file.mimetype.startsWith('image/');
-    const isValidType = 
-        isImageType ||
-        ALLOWED_FILE_TYPES.VIDEOS.includes(file.mimetype) ||
-        ALLOWED_FILE_TYPES.DOCUMENTS.includes(file.mimetype) ||
-        isVideoFile(file.mimetype, file.originalname);
-
-    if (!isValidType) {
-        errors.push(`File type ${file.mimetype} is not allowed`);
-    }
+    // Additional validation for video files
+    const isVideo = file.mimetype && (file.mimetype.startsWith('video/') || isVideoFile(file.mimetype, file.originalname));
+    const detectedAsVideo = isVideo;
+    const willUseResumableUpload = file.size && file.size > CHUNKED_UPLOAD_CONFIG.CHUNK_THRESHOLD;
 
     return {
         isValid: errors.length === 0,
-        errors
+        errors,
+        isVideo: detectedAsVideo,
+        detectedAsVideo,
+        willUseResumableUpload
     };
 };
 
@@ -120,6 +141,7 @@ module.exports = {
     ALLOWED_FILE_TYPES,
     CHUNKED_UPLOAD_CONFIG,
     getS3FolderForFileType,
+    getS3BucketForFileType,
     validateFile,
     isVideoFile
 };

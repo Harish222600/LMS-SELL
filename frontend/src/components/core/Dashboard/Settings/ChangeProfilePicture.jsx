@@ -6,9 +6,8 @@ import { toast } from "react-hot-toast"
 
 import { updateUserProfileImage } from "../../../../services/operations/SettingsAPI"
 import IconBtn from "../../../common/IconBtn"
-import Img from './../../../common/Img';
-
-
+import Img from './../../../common/Img'
+import { smartUpload } from "../../../../utils/clientUpload"
 
 export default function ChangeProfilePicture() {
   const { token } = useSelector((state) => state.auth)
@@ -18,6 +17,7 @@ export default function ChangeProfilePicture() {
   const [loading, setLoading] = useState(false)
   const [profileImage, setProfileImage] = useState(null)
   const [previewSource, setPreviewSource] = useState(null)
+  const [uploadProgress, setUploadProgress] = useState(0)
 
   const fileInputRef = useRef(null)
 
@@ -57,38 +57,48 @@ export default function ChangeProfilePicture() {
     }
   }
 
-  const handleFileUpload = () => {
+  const handleFileUpload = async () => {
     try {
-      // console.log("uploading...")
       setLoading(true)
-      const formData = new FormData()
-      formData.append("profileImage", profileImage)
+      setUploadProgress(0)
 
-      dispatch(updateUserProfileImage(token, formData)).then(() => {
-        setLoading(false)
-        // Clear the preview and selected file after successful upload
-        setProfileImage(null)
-        setPreviewSource(null)
-        // Reset file input
-        if (fileInputRef.current) {
-          fileInputRef.current.value = ''
+      // HYBRID APPROACH: Try client-side upload first, fallback to server-side
+      const result = await smartUpload(
+        profileImage,
+        'profiles',
+        '/api/v1/profile/updateUserProfileImage',
+        (progress) => {
+          setUploadProgress(progress)
+          console.log(`Upload progress: ${progress}%`)
         }
-        
-        // Additional logging to debug the issue
-        console.log("Profile image upload completed successfully");
-        console.log("Current user from Redux after upload:", user);
-        
-        // Force a small delay to ensure Redux state has updated
-        setTimeout(() => {
-          console.log("User state after timeout:", user);
-        }, 100);
-      }).catch((error) => {
-        console.error("Profile image upload failed:", error);
-        setLoading(false)
-      })
-    } catch (error) {
-      console.log("ERROR MESSAGE - ", error.message)
+      )
+
+      console.log('✅ Profile image uploaded successfully:', result)
+
+      // Update Redux state with new image URL
+      const formData = new FormData()
+      formData.append("imageUrl", result.secure_url || result.url)
+      
+      await dispatch(updateUserProfileImage(token, formData))
+      
+      toast.success('Profile picture updated successfully!')
+      
+      // Clear the preview and selected file after successful upload
+      setProfileImage(null)
+      setPreviewSource(null)
+      setUploadProgress(0)
+      
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+
       setLoading(false)
+    } catch (error) {
+      console.error("❌ Profile image upload failed:", error)
+      toast.error(error.message || 'Failed to upload profile picture')
+      setLoading(false)
+      setUploadProgress(0)
     }
   }
 
@@ -187,11 +197,25 @@ export default function ChangeProfilePicture() {
               <div className="bg-academic-gold-50 border border-academic-gold-200 p-4 rounded-lg">
                 <div className="flex items-center gap-3">
                   <FaCamera className="text-academic-gold-600" />
-                  <div>
+                  <div className="flex-1">
                     <p className="font-medium text-academic-gold-800 font-inter">Photo Selected</p>
                     <p className="text-sm text-academic-gold-700 font-inter">
                       {profileImage.name} ({(profileImage.size / (1024 * 1024)).toFixed(2)}MB)
                     </p>
+                    {loading && uploadProgress > 0 && (
+                      <div className="mt-2">
+                        <div className="flex justify-between text-xs text-academic-gold-700 mb-1">
+                          <span>Uploading...</span>
+                          <span>{uploadProgress}%</span>
+                        </div>
+                        <div className="w-full bg-academic-gold-200 rounded-full h-2">
+                          <div 
+                            className="bg-academic-gold-600 h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${uploadProgress}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

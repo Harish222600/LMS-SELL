@@ -2,25 +2,19 @@ import { useEffect, useRef, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { FiUploadCloud } from "react-icons/fi"
 import { useSelector } from "react-redux"
-import { uploadFile, ResumableUploader } from "../../../../utils/directUpload"
+import { uploadVideoToS3, uploadImageToS3 } from "../../../../utils/clientUpload"
 import VideoUploadProgress from "../../../common/VideoUploadProgress"
-import { useUpload } from "../../../../contexts/UploadContext"
 
 
 
 export default function Upload({ name, label, register, setValue, errors, video = false, viewData = null, editData = null, setImageFile = null, subSectionId = null }) {
   const { token } = useSelector((state) => state.auth)
-  const uploadContext = useUpload()
   const [selectedFile, setSelectedFile] = useState(null)
   const [previewSource, setPreviewSource] = useState("")
   const [isLoadingPreview, setIsLoadingPreview] = useState(false)
   const [previewError, setPreviewError] = useState(null)
   const inputRef = useRef(null)
   const videoRef = useRef(null)
-  
-  // Upload context integration
-  const [currentUploadId, setCurrentUploadId] = useState(null)
-  const [abortController, setAbortController] = useState(null)
   
   // Debug props
   console.log("📤 Upload Component Props:", {
@@ -32,21 +26,20 @@ export default function Upload({ name, label, register, setValue, errors, video 
     hasToken: !!token
   })
   
-  // Upload state management
+  // CLIENT-SIDE Upload state management
   const [isUploading, setIsUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [uploadError, setUploadError] = useState(null)
   const [uploadResult, setUploadResult] = useState(null)
-  const [uploader, setUploader] = useState(null)
-  const [uploadStatus, setUploadStatus] = useState('idle') // 'idle', 'uploading', 'completed', 'error', 'cancelled'
+  const [uploadStatus, setUploadStatus] = useState('idle') // 'idle', 'uploading', 'completed', 'error'
 
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0]
     if (file) {
-      console.log("File dropped:", {
+      console.log("📁 File dropped:", {
         name: file.name,
         type: file.type,
-        size: file.size
+        size: `${(file.size / (1024 * 1024)).toFixed(2)}MB`
       })
       
       // Reset upload state
@@ -55,16 +48,8 @@ export default function Upload({ name, label, register, setValue, errors, video 
       previewFile(file)
       setSelectedFile(file)
       
-      // For videos, don't auto-upload - wait for batch save
-      // For images, still auto-upload
-      if (!video) {
-        // Images still upload immediately
-        startUpload(file)
-      } else {
-        // Videos are stored as File objects for batch upload later
-        setValue(name, file)
-        console.log('📁 Video file stored for batch upload:', file.name)
-      }
+      // CLIENT-SIDE UPLOAD: Start upload immediately for both images and videos
+      startClientSideUpload(file)
     }
   }
 
@@ -75,160 +60,57 @@ export default function Upload({ name, label, register, setValue, errors, video 
     setUploadError(null)
     setUploadResult(null)
     setUploadStatus('idle')
-    if (uploader) {
-      uploader.cancel()
-      setUploader(null)
-    }
   }
 
-  // Start file upload
-  const startUpload = async (file) => {
+  // CLIENT-SIDE UPLOAD: Simple and fast for all file sizes
+  const startClientSideUpload = async (file) => {
     try {
-      console.log('🚀 Starting upload for:', file.name)
+      console.log('🚀 Starting CLIENT-SIDE upload for:', file.name, `(${(file.size / (1024 * 1024)).toFixed(2)}MB)`)
       setIsUploading(true)
       setUploadStatus('uploading')
       setUploadError(null)
+      setUploadProgress(0)
       
       const folder = video ? 'videos' : 'images'
       
-      // Create AbortController for cancellation
-      const controller = new AbortController()
-      setAbortController(controller)
+      // Use client-side upload utility
+      const result = video 
+        ? await uploadVideoToS3(file, folder, (progress) => {
+            setUploadProgress(progress)
+            console.log(`📹 Video upload progress: ${progress}%`)
+          })
+        : await uploadImageToS3(file, folder, (progress) => {
+            setUploadProgress(progress)
+            console.log(`🖼️ Image upload progress: ${progress}%`)
+          })
       
-      // Generate unique upload ID and register with context
-      const uploadId = uploadContext.generateUploadId()
-      setCurrentUploadId(uploadId)
+      console.log('✅ CLIENT-SIDE upload completed:', {
+        url: result.secure_url,
+        duration: result.duration,
+        size: `${(result.size / (1024 * 1024)).toFixed(2)}MB`
+      })
       
-      // Check if we need resumable upload
-      const needsResumableUpload = file.size > 50 * 1024 * 1024 // 50MB
+      setUploadResult(result)
+      setUploadStatus('completed')
+      setIsUploading(false)
+      setUploadProgress(100)
       
-      if (needsResumableUpload) {
-        console.log('📦 Using resumable upload for large file')
-        
-        const resumableUploader = new ResumableUploader(file, folder, {
-          uploadId,
-          abortController: controller,
-          uploadContext,
-          onProgress: (progressData) => {
-            setUploadProgress(progressData.progress)
-            console.log('Upload progress:', progressData)
-          },
-          onError: (error) => {
-            console.error('Upload error:', error)
-            setUploadError(error.message)
-            setUploadStatus('error')
-            setIsUploading(false)
-            
-            // Unregister from context
-            if (uploadId) {
-              uploadContext.unregisterUpload(uploadId)
-            }
-          },
-          onComplete: (result) => {
-            console.log('Upload completed:', result)
-            setUploadResult(result)
-            setUploadStatus('completed')
-            setIsUploading(false)
-            setUploadProgress(100)
-            
-            // Set the result URL in the form
-            setValue(name, result.secure_url)
-            
-            // Unregister from context
-            if (uploadId) {
-              uploadContext.unregisterUpload(uploadId)
-            }
-          }
-        })
-        
-        setUploader(resumableUploader)
-        await resumableUploader.start()
-        
-      } else {
-        console.log('🚀 Using direct upload for small file')
-        
-        const result = await uploadFile(file, folder, {
-          uploadId,
-          abortController: controller,
-          uploadContext,
-          onProgress: (progressData) => {
-            if (progressData) {
-              setUploadProgress(progressData.progress || 50) // Fallback progress for direct uploads
-            }
-          }
-        })
-        
-        console.log('✅ Direct upload completed:', result)
-        setUploadResult(result)
-        setUploadStatus('completed')
-        setIsUploading(false)
-        setUploadProgress(100)
-        
-        // Set the result URL in the form
-        setValue(name, result.secure_url)
-        
-        // Unregister from context
-        if (uploadId) {
-          uploadContext.unregisterUpload(uploadId)
-        }
-      }
+      // Set the result URL in the form
+      setValue(name, result.secure_url)
       
     } catch (error) {
-      console.error('❌ Upload failed:', error)
-      
-      if (error.name === 'AbortError' || error.message === 'Upload cancelled') {
-        console.log('🚫 Upload was cancelled')
-        setUploadStatus('cancelled')
-        setUploadError('Upload cancelled')
-      } else {
-        setUploadError(error.message)
-        setUploadStatus('error')
-      }
-      
+      console.error('❌ CLIENT-SIDE upload failed:', error)
+      setUploadError(error.message || 'Upload failed')
+      setUploadStatus('error')
       setIsUploading(false)
-      
-      // Unregister from context
-      if (currentUploadId) {
-        uploadContext.unregisterUpload(currentUploadId)
-      }
+      setUploadProgress(0)
     }
-  }
-
-  // Handle upload pause
-  const pauseUpload = () => {
-    if (uploader && uploader.pause) {
-      uploader.pause()
-      setUploadStatus('paused')
-    }
-  }
-
-  // Handle upload resume
-  const resumeUpload = async () => {
-    if (uploader && uploader.resume) {
-      try {
-        setUploadStatus('uploading')
-        await uploader.resume()
-      } catch (error) {
-        console.error('Resume failed:', error)
-        setUploadError(error.message)
-        setUploadStatus('error')
-      }
-    }
-  }
-
-  // Handle upload cancellation
-  const cancelUpload = async () => {
-    if (uploader && uploader.cancel) {
-      await uploader.cancel()
-    }
-    resetUploadState()
-    setUploadStatus('cancelled')
   }
 
   // Handle upload retry
   const retryUpload = () => {
     if (selectedFile) {
-      startUpload(selectedFile)
+      startClientSideUpload(selectedFile)
     }
   }
 
@@ -478,52 +360,14 @@ export default function Upload({ name, label, register, setValue, errors, video 
     }
   }, [viewData, editData, video, selectedFile, token, subSectionId])
 
-  // Clean up object URLs on unmount and cancel uploads
+  // Clean up object URLs on unmount
   useEffect(() => {
     return () => {
       if (previewSource && previewSource.startsWith('blob:')) {
         URL.revokeObjectURL(previewSource)
       }
-      
-      // Cancel any ongoing upload when component unmounts
-      if (currentUploadId && uploadContext) {
-        uploadContext.cancelUpload(currentUploadId)
-      }
-      
-      // Abort any ongoing request
-      if (abortController) {
-        abortController.abort()
-      }
     }
-  }, [previewSource, currentUploadId, uploadContext, abortController])
-
-  // Expose cancellation method for external use (e.g., from course builder)
-  useEffect(() => {
-    const cancelCurrentUpload = () => {
-      if (currentUploadId && uploadContext) {
-        console.log('🚫 External cancellation requested for upload:', currentUploadId)
-        uploadContext.cancelUpload(currentUploadId)
-      }
-      
-      if (abortController) {
-        abortController.abort()
-      }
-      
-      resetUploadState()
-    }
-
-    // Store the cancel function on the component instance
-    if (typeof window !== 'undefined') {
-      window[`cancelUpload_${name}`] = cancelCurrentUpload
-    }
-
-    return () => {
-      // Cleanup the global reference
-      if (typeof window !== 'undefined') {
-        delete window[`cancelUpload_${name}`]
-      }
-    }
-  }, [currentUploadId, uploadContext, abortController, name])
+  }, [previewSource])
 
   return (
     <div className="flex flex-col space-y-2">
@@ -791,36 +635,33 @@ export default function Upload({ name, label, register, setValue, errors, video 
         )}
       </div>
 
-      {/* Upload Progress for Videos */}
+      {/* CLIENT-SIDE Upload Progress for Videos */}
       {video && isUploading && (
-        <div className="mt-4">
-          <VideoUploadProgress
-            progress={uploadProgress}
-            fileName={selectedFile?.name || ''}
-            fileSize={selectedFile?.size || 0}
-            status={uploadStatus}
-            onCancel={cancelUpload}
-            onPause={pauseUpload}
-            onResume={resumeUpload}
-            error={uploadError}
-            isChunked={uploader !== null}
-            currentChunk={uploader ? uploader.uploadedChunks?.size || 0 : 0}
-            totalChunks={uploader ? uploader.totalChunks || 0 : 0}
-            uploadType={uploader ? 'resumable' : 'direct'}
-          />
-        </div>
-      )}
-
-      {/* Upload Status Messages */}
-      {video && selectedFile && !isUploading && (
-        <div className="mt-4 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg">
-          <p className="text-sm text-blue-400 flex items-center gap-2">
-            <span>📁</span>
-            Video selected: {selectedFile.name} ({(selectedFile.size / (1024 * 1024)).toFixed(2)} MB)
-          </p>
-          <p className="text-xs text-blue-300 mt-1">
-            Video will be uploaded when you click "Save All Changes"
-          </p>
+        <div className="mt-4 p-4 bg-blue-900/20 border border-blue-500/30 rounded-lg">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm text-blue-400 font-medium">
+              📹 Uploading {selectedFile?.name}
+            </p>
+            <span className="text-xs text-blue-300">
+              {uploadProgress}%
+            </span>
+          </div>
+          
+          <div className="w-full bg-blue-800/30 rounded-full h-2 mb-2">
+            <div 
+              className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+              style={{ width: `${uploadProgress}%` }}
+            ></div>
+          </div>
+          
+          <div className="flex justify-between text-xs text-blue-300">
+            <span>
+              {selectedFile ? `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB` : ''}
+            </span>
+            <span>
+              Client-side upload • Direct to S3
+            </span>
+          </div>
         </div>
       )}
 
