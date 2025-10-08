@@ -58,7 +58,8 @@ export default function Upload({ name, label, register, setValue, errors, video 
   const [uploadProgress, setUploadProgress] = useState(0)
   const [uploadError, setUploadError] = useState(null)
   const [uploadResult, setUploadResult] = useState(null)
-  const [uploadStatus, setUploadStatus] = useState('idle') // 'idle', 'uploading', 'completed', 'error'
+  const [uploadStatus, setUploadStatus] = useState('idle') // 'idle', 'uploading', 'completed', 'error', 'cancelled'
+  const abortControllerRef = useRef(null) // Track AbortController for cancellation
 
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0]
@@ -68,6 +69,15 @@ export default function Upload({ name, label, register, setValue, errors, video 
         type: file.type,
         size: `${(file.size / (1024 * 1024)).toFixed(2)}MB`
       })
+      
+      // Cancel any existing upload before starting a new one
+      if (abortControllerRef.current) {
+        console.log('🚫 Cancelling previous upload before starting new one')
+        abortControllerRef.current.abort()
+      }
+      
+      // Clear the ref immediately to avoid using aborted signal
+      abortControllerRef.current = null
       
       // Reset upload state
       resetUploadState()
@@ -87,6 +97,19 @@ export default function Upload({ name, label, register, setValue, errors, video 
     setUploadError(null)
     setUploadResult(null)
     setUploadStatus('idle')
+    // Don't reset abortControllerRef here as it might be in use
+  }
+
+  // Cancel ongoing upload
+  const cancelUpload = () => {
+    if (abortControllerRef.current) {
+      console.log('🚫 Cancelling upload...')
+      abortControllerRef.current.abort()
+      abortControllerRef.current = null
+      setUploadStatus('cancelled')
+      setIsUploading(false)
+      setUploadProgress(0)
+    }
   }
 
   // CLIENT-SIDE UPLOAD: Simple and fast for all file sizes
@@ -98,18 +121,23 @@ export default function Upload({ name, label, register, setValue, errors, video 
       setUploadError(null)
       setUploadProgress(0)
       
+      // Create new AbortController for this upload
+      const abortController = new AbortController()
+      console.log('🔧 Created new AbortController, signal.aborted:', abortController.signal.aborted)
+      abortControllerRef.current = abortController
+      
       const folder = video ? 'videos' : 'images'
       
-      // Use client-side upload utility
+      // Use client-side upload utility with abort signal
       const result = video 
         ? await uploadVideoToS3(file, folder, (progress) => {
             setUploadProgress(progress)
             console.log(`📹 Video upload progress: ${progress}%`)
-          })
+          }, { abortSignal: abortController.signal })
         : await uploadImageToS3(file, folder, (progress) => {
             setUploadProgress(progress)
             console.log(`🖼️ Image upload progress: ${progress}%`)
-          })
+          }, { abortSignal: abortController.signal })
       
       console.log('✅ CLIENT-SIDE upload completed:', {
         url: result.secure_url,
@@ -117,10 +145,12 @@ export default function Upload({ name, label, register, setValue, errors, video 
         size: `${(result.size / (1024 * 1024)).toFixed(2)}MB`
       })
       
+      // Upload completed successfully
       setUploadResult(result)
       setUploadStatus('completed')
       setIsUploading(false)
       setUploadProgress(100)
+      abortControllerRef.current = null
       
       // Set the result URL in the form
       setValue(name, result.secure_url)
@@ -137,11 +167,23 @@ export default function Upload({ name, label, register, setValue, errors, video 
       }
       
     } catch (error) {
+      // Check if error is due to cancellation
+      if (error.message === 'Upload cancelled' || error.name === 'CanceledError') {
+        console.log('🚫 Upload cancelled by user')
+        setUploadStatus('cancelled')
+        setUploadError('Upload cancelled')
+        setIsUploading(false)
+        setUploadProgress(0)
+        abortControllerRef.current = null
+        return
+      }
+      
       console.error('❌ CLIENT-SIDE upload failed:', error)
       setUploadError(error.message || 'Upload failed')
       setUploadStatus('error')
       setIsUploading(false)
       setUploadProgress(0)
+      abortControllerRef.current = null
     }
   }
 
@@ -304,6 +346,16 @@ export default function Upload({ name, label, register, setValue, errors, video 
         
         // For S3 URLs, we need to use our streaming endpoint
         if (actualSubSectionId && token) {
+          // Check if this is a temporary ID (not saved to database yet)
+          if (actualSubSectionId.startsWith('temp_')) {
+            console.log("🎥 Temporary subsection ID detected, using direct S3 URL for preview")
+            // For temporary IDs, try to use the S3 URL directly for preview
+            // This won't work for all cases due to CORS, but it's worth trying
+            setPreviewSource(initialVideoUrl)
+            setIsLoadingPreview(false)
+            return
+          }
+          
           const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL || 
                          (typeof window !== 'undefined' && window.location.hostname !== 'localhost' 
                            ? `${window.location.protocol}//${window.location.hostname}:5001` 
@@ -316,40 +368,17 @@ export default function Upload({ name, label, register, setValue, errors, video 
             token: token ? `${token.substring(0, 20)}...` : 'No token'
           })
           
-          // Test the streaming endpoint first
-          fetch(streamingUrl, {
-            method: 'HEAD',
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          })
-          .then(response => {
-            console.log("🎥 Streaming endpoint test response:", {
-              status: response.status,
-              statusText: response.statusText,
-              headers: Object.fromEntries(response.headers.entries())
-            })
-            
-            if (response.ok) {
-              setPreviewSource(streamingUrl)
-              setIsLoadingPreview(false)
-            } else {
-              console.error("❌ Streaming endpoint failed:", response.status, response.statusText)
-              setPreviewError(`Video streaming failed (${response.status}). Video will be accessible in course view.`)
-              setIsLoadingPreview(false)
-            }
-          })
-          .catch(error => {
-            console.error("❌ Streaming endpoint error:", error)
-            setPreviewError("Video preview temporarily unavailable. Video will be accessible in course view.")
-            setIsLoadingPreview(false)
-          })
+          // Set the streaming URL directly - the video player will handle errors
+          setPreviewSource(streamingUrl)
+          setIsLoadingPreview(false)
         } else {
           console.log("SubSectionId or token not available for S3 streaming", {
             subSectionId: actualSubSectionId,
             hasToken: !!token
           })
-          setPreviewError("Video preview is temporarily unavailable in edit mode. The video will be accessible when viewing the course.")
+          // For cases without subSectionId, try direct S3 URL
+          console.log("🎥 No subSectionId available, trying direct S3 URL")
+          setPreviewSource(initialVideoUrl)
           setIsLoadingPreview(false)
         }
       } else if (initialVideoUrl.includes('supabase') || initialVideoUrl.includes('storage')) {
@@ -398,7 +427,7 @@ export default function Upload({ name, label, register, setValue, errors, video 
     }
   }, [viewData, editData, video, selectedFile, token, subSectionId])
 
-  // Clean up object URLs on unmount
+  // Clean up object URLs on unmount (but DON'T cancel uploads on re-render)
   useEffect(() => {
     return () => {
       if (previewSource && previewSource.startsWith('blob:')) {
@@ -406,6 +435,18 @@ export default function Upload({ name, label, register, setValue, errors, video 
       }
     }
   }, [previewSource])
+  
+  // Only cancel uploads when component truly unmounts (not on re-renders)
+  useEffect(() => {
+    return () => {
+      // This cleanup only runs when the component is actually unmounted
+      if (abortControllerRef.current) {
+        console.log('🚫 Component unmounting, cancelling upload...')
+        abortControllerRef.current.abort()
+        abortControllerRef.current = null
+      }
+    }
+  }, []) // Empty dependency array means this only runs on mount/unmount
 
   return (
     <div className="flex flex-col space-y-2">
@@ -454,6 +495,15 @@ export default function Upload({ name, label, register, setValue, errors, video 
                     if (originalUrl.includes('amazonaws.com') || originalUrl.includes('cloudfront.net')) {
                       // For S3 URLs, try streaming endpoint if we have subSectionId
                       if (subSectionId && token) {
+                        // Check if this is a temporary ID (not saved to database yet)
+                        if (subSectionId.startsWith('temp_')) {
+                          console.log("🎥 Retry with temporary ID: Using direct S3 URL")
+                          // For temporary IDs, try direct S3 URL instead of streaming endpoint
+                          setPreviewSource(originalUrl)
+                          setIsLoadingPreview(false)
+                          return
+                        }
+                        
                         const baseUrl = import.meta.env.VITE_REACT_APP_BASE_URL || 
                                        (typeof window !== 'undefined' && window.location.hostname !== 'localhost' 
                                          ? `${window.location.protocol}//${window.location.hostname}:5001` 
@@ -528,10 +578,23 @@ export default function Upload({ name, label, register, setValue, errors, video 
                     console.error("Video preview error:", e)
                     console.error("Failed URL:", previewSource)
                     
+                    // If it's our streaming endpoint that failed, show a helpful message
+                    if (previewSource.includes('/api/v1/video/direct/') || previewSource.includes('/api/v1/video/stream/')) {
+                      console.log("Streaming endpoint failed - video may still be processing")
+                      setPreviewError("Video preview temporarily unavailable. Video will be accessible in course view.")
+                      setPreviewSource("")
+                      return
+                    }
+                    
                     // If it's an S3 URL that failed, show appropriate error
                     if (previewSource.includes('amazonaws.com') || previewSource.includes('cloudfront.net')) {
                       console.log("S3 URL failed - this is expected due to CORS restrictions")
-                      setPreviewError("Video preview not available for S3 videos in edit mode. Video will be accessible after saving.")
+                      // Check if this is a temporary subsection (before saving)
+                      if (subSectionId && subSectionId.startsWith('temp_')) {
+                        setPreviewError("Video uploaded successfully! Preview will be available after saving the lecture.")
+                      } else {
+                        setPreviewError("Video preview not available for S3 videos in edit mode. Video will be accessible after saving.")
+                      }
                       setPreviewSource("")
                       return
                     }
@@ -591,6 +654,11 @@ export default function Upload({ name, label, register, setValue, errors, video 
                 <button
                   type="button"
                   onClick={() => {
+                    // Cancel ongoing upload if any
+                    if (isUploading) {
+                      cancelUpload()
+                    }
+                    
                     // Clean up object URL if it exists
                     if (previewSource && previewSource.startsWith('blob:')) {
                       URL.revokeObjectURL(previewSource)
@@ -599,11 +667,18 @@ export default function Upload({ name, label, register, setValue, errors, video 
                     setSelectedFile(null)
                     setPreviewError(null)
                     setValue(name, null)
+                    
+                    // Clear video duration if it's a video
+                    if (video) {
+                      setValue(`${name}Duration`, null)
+                      console.log('🗑️ Cleared video and duration from form')
+                    }
+                    
                     resetUploadState()
                   }}
                   className="text-sm font-medium text-richblack-400 underline hover:text-yellow-50"
                 >
-                  {selectedFile ? 'Remove' : 'Replace'} {video ? "Video" : "Image"}
+                  {isUploading ? 'Cancel Upload' : (selectedFile ? 'Remove' : 'Replace')} {video ? "Video" : "Image"}
                 </button>
                 
                 {video && uploadStatus === 'error' && (
@@ -725,6 +800,15 @@ export default function Upload({ name, label, register, setValue, errors, video 
           >
             Try Again
           </button>
+        </div>
+      )}
+
+      {video && uploadStatus === 'cancelled' && (
+        <div className="mt-4 p-3 bg-yellow-900/20 border border-yellow-500/30 rounded-lg">
+          <p className="text-sm text-yellow-400 flex items-center gap-2">
+            <span>🚫</span>
+            Upload cancelled. The video will not be saved.
+          </p>
         </div>
       )}
 

@@ -398,16 +398,45 @@ router.get('/direct/:subSectionId', async (req, res) => {
             const urlParts = videoUrl.split('/');
             s3Key = urlParts.slice(3).join('/'); // Remove https://bucket.s3.region.amazonaws.com/
             console.log('🎥 Extracted S3 key from amazonaws URL:', s3Key);
+            
+            // Validate extracted key
+            if (!s3Key || s3Key.length === 0) {
+                console.error('❌ Failed to extract S3 key from URL:', videoUrl);
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid S3 URL format - could not extract key',
+                    videoUrl: videoUrl
+                });
+            }
         } else if (process.env.AWS_CLOUDFRONT_DOMAIN && videoUrl.includes(process.env.AWS_CLOUDFRONT_DOMAIN)) {
             // Extract key from CloudFront URL
-            s3Key = videoUrl.split(`https://${process.env.AWS_CLOUDFRONT_DOMAIN}/`)[1];
+            const parts = videoUrl.split(`https://${process.env.AWS_CLOUDFRONT_DOMAIN}/`);
+            if (parts.length < 2) {
+                console.error('❌ Failed to extract key from CloudFront URL:', videoUrl);
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid CloudFront URL format',
+                    videoUrl: videoUrl
+                });
+            }
+            s3Key = parts[1];
             console.log('🎥 Extracted S3 key from CloudFront URL:', s3Key);
         } else {
             console.error('❌ Invalid video URL format:', videoUrl);
             return res.status(400).json({
                 success: false,
-                message: 'Invalid video URL format',
-                videoUrl: videoUrl
+                message: 'Invalid video URL format - must be S3 or CloudFront URL',
+                videoUrl: videoUrl,
+                supportedFormats: ['amazonaws.com', process.env.AWS_CLOUDFRONT_DOMAIN].filter(Boolean)
+            });
+        }
+
+        // Validate bucket name
+        if (!BUCKET_NAME) {
+            console.error('❌ AWS_S3_BUCKET_NAME environment variable not set');
+            return res.status(500).json({
+                success: false,
+                message: 'Server configuration error: S3 bucket not configured'
             });
         }
 

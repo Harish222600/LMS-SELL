@@ -38,9 +38,14 @@ const uploadRoutes = require('./routes/upload');
 const chunkedUploadRoutes = require('./routes/chunkedUpload');
 const videoPlaybackRoutes = require('./routes/videoPlayback');
 const fixDurationsRoutes = require('./routes/fixDurations');
+const systemHealthRoutes = require('./routes/systemHealth');
+const { trackResponseTime } = require('./controllers/systemHealth');
 
 // middleware 
 app.use(cookieParser());
+
+// Track response times for system health monitoring
+app.use(trackResponseTime);
 
 // CORS configuration
 const getAllowedOrigins = () => {
@@ -298,6 +303,8 @@ app.use('/api/v1/chunked-upload', chunkedUploadRoutes);
 app.use('/api/v1/video', videoPlaybackRoutes);
 // Fix Durations Routes (temporary)
 app.use('/api/v1/fix', fixDurationsRoutes);
+// System Health Routes
+app.use('/api/v1/system-health', systemHealthRoutes);
 
 // Health check route
 app.get('/health', (req, res) => {

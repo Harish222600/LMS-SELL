@@ -6,38 +6,10 @@ import { getAnalytics } from "../../../services/operations/adminAPI";
 import { getSystemHealthMetricsQuiet } from "../../../services/operations/systemHealthAPI";
 import { exportEnhancedCSV } from "../../../utils/exportEnhancedCSV";
 import { motion } from "framer-motion";
-import { fadeIn } from "../../../components/common/motionFrameVarients";
+import { fadeIn } from "../../../components/common/motionFrameVariants";
 import HighlightText from "../../../components/core/HomePage/HighlightText";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
-import { 
-  FaChartLine, 
-  FaUsers, 
-  FaGraduationCap, 
-  FaChalkboardTeacher, 
-  FaDollarSign, 
-  FaArrowUp, 
-  FaClock, 
-  FaPlay, 
-  FaPause, 
-  FaSync, 
-  FaFilePdf, 
-  FaFileCsv, 
-  FaExpand, 
-  FaCompress, 
-  FaEye, 
-  FaCheckCircle, 
-  FaExclamationTriangle, 
-  FaTimesCircle, 
-  FaBell,
-  FaPlus,
-  FaBookOpen,
-  FaSignInAlt,
-  FaUserShield
-} from "react-icons/fa";
-
-// Register Chart.js components
-Chart.register(...registerables);
 
 const EnhancedAnalytics = () => {
   const { token } = useSelector((state) => state.auth);
@@ -515,6 +487,35 @@ const EnhancedAnalytics = () => {
     }]);
   };
 
+    const csvContent = "data:text/csv;charset=utf-8,"
+      + "Metric,Value\n"
+      + `Total Users,${analytics.users.total}\n`
+      + `Students,${analytics.users.students}\n`
+      + `Instructors,${analytics.users.instructors}\n`
+      + `Admins,${analytics.users.admins}\n`
+      + `Recent Registrations,${analytics.users.recentRegistrations}\n`
+      + `Total Courses,${analytics.courses.total}\n`
+      + `Published Courses,${analytics.courses.published}\n`
+      + `Draft Courses,${analytics.courses.draft}\n`
+      + `Free Courses,${analytics.courses.free}\n`
+      + `Paid Courses,${analytics.courses.paid}\n`
+      + `Pending Requests,${analytics.requests?.pendingAccessRequests || 0}\n`;
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "analytics-data.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setNotifications(prev => [...prev, {
+      id: Date.now(),
+      message: 'Analytics exported to CSV successfully',
+      type: 'success',
+      timestamp: new Date()
+    }]);
+  };
 
   if (loading && !analytics) return (
     <div className="flex items-center justify-center h-64">

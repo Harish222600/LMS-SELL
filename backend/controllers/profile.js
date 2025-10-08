@@ -240,50 +240,62 @@ exports.getUserDetails = async (req, res) => {
 exports.updateUserProfileImage = async (req, res) => {
     try {
         const profileImage = req.file; // multer provides file in req.file when using upload.single()
+        const { imageUrl } = req.body; // Accept pre-uploaded image URL from client-side upload
         const userId = req.user.id;
 
-        // validation
-        if (!profileImage) {
+        let imageSecureUrl;
+
+        // HYBRID APPROACH: Accept either file upload OR pre-uploaded image URL
+        if (imageUrl) {
+            // Client-side upload: Image already uploaded to S3, just update DB
+            console.log('📥 Using pre-uploaded image URL from client:', imageUrl);
+            imageSecureUrl = imageUrl;
+        } else if (profileImage) {
+            // Server-side upload: Upload file to S3 first
+            console.log('📤 Uploading image to S3 from server...');
+
+            // Validate file size (5MB limit for profile images)
+            const MAX_PROFILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+            if (profileImage.size > MAX_PROFILE_SIZE) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Profile image must be 5MB or less. Please choose a smaller image.',
+                    error: 'FILE_SIZE_EXCEEDED',
+                    maxSize: '5MB',
+                    currentSize: `${(profileImage.size / (1024 * 1024)).toFixed(2)}MB`
+                });
+            }
+
+            // Validate file type - Allow any image type
+            if (!profileImage.mimetype.startsWith('image/')) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Invalid file type. Please upload an image file.',
+                    error: 'INVALID_FILE_TYPE',
+                    allowedTypes: ['Any image format (JPEG, PNG, GIF, WebP, BMP, TIFF, SVG, ICO, etc.)']
+                });
+            }
+
+            console.log('profileImage = ', profileImage);
+
+            // upload image to S3 with optimized settings for profile images
+            // Profile images don't need to be huge, so we limit height to 800px for better performance
+            const image = await uploadImageToS3(profileImage, 'profiles', 800, 80);
+            console.log('✅ Profile image uploaded to S3:', image.secure_url);
+            imageSecureUrl = image.secure_url;
+        } else {
+            // No image provided at all
             return res.status(400).json({
                 success: false,
-                message: 'No profile image provided',
+                message: 'No profile image provided. Please provide either a file or an image URL.',
             });
         }
 
-        // Validate file size (5MB limit for profile images)
-        const MAX_PROFILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
-        if (profileImage.size > MAX_PROFILE_SIZE) {
-            return res.status(400).json({
-                success: false,
-                message: 'Profile image must be 5MB or less. Please choose a smaller image.',
-                error: 'FILE_SIZE_EXCEEDED',
-                maxSize: '5MB',
-                currentSize: `${(profileImage.size / (1024 * 1024)).toFixed(2)}MB`
-            });
-        }
-
-        // Validate file type - Allow any image type
-        if (!profileImage.mimetype.startsWith('image/')) {
-            return res.status(400).json({
-                success: false,
-                message: 'Invalid file type. Please upload an image file.',
-                error: 'INVALID_FILE_TYPE',
-                allowedTypes: ['Any image format (JPEG, PNG, GIF, WebP, BMP, TIFF, SVG, ICO, etc.)']
-            });
-        }
-
-        console.log('profileImage = ', profileImage);
-
-        // upload image to S3 with optimized settings for profile images
-        // Profile images don't need to be huge, so we limit height to 800px for better performance
-        const image = await uploadImageToS3(profileImage, 'profiles', 800, 80);
-        console.log('✅ Profile image uploaded to S3:', image.secure_url);
-
-        console.log('image url - ', image);
+        console.log('🔄 Updating user profile with image URL:', imageSecureUrl);
 
         // update in DB 
         const updatedUserDetails = await User.findByIdAndUpdate(userId,
-            { image: image.secure_url },
+            { image: imageSecureUrl },
             { new: true }
         )
             .populate({

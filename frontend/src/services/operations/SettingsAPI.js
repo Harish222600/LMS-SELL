@@ -8,26 +8,33 @@ import { logout } from "./authAPI"
 const {
   UPDATE_DISPLAY_PICTURE_API,
   UPDATE_PROFILE_API,
-  CHANGE_PASSWORD_API,
   DELETE_PROFILE_API,
 } = settingsEndpoints
 
 
 
 // ================ update User Profile Image  ================
-export function updateUserProfileImage(token, formData) {
+export function updateUserProfileImage(token, data) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
 
     try {
+      // Determine content type based on data type
+      const isFormData = data instanceof FormData;
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      
+      // Only set Content-Type for FormData, let axios set it for JSON
+      if (isFormData) {
+        headers["Content-Type"] = "multipart/form-data";
+      }
+
       const response = await apiConnector(
         "PUT",
         UPDATE_DISPLAY_PICTURE_API,
-        formData,
-        {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        }
+        data,
+        headers
       )
       console.log("UPDATE_DISPLAY_PICTURE_API API RESPONSE............", response);
 

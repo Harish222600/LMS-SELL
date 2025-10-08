@@ -28,8 +28,17 @@ router.get('/getUserDetails', auth, getUserDetails);
 // Get Enrolled Courses
 router.get('/getEnrolledCourses', auth, getEnrolledCourses);
 
-// update profile image
-router.put('/updateUserProfileImage', auth, upload.single('profileImage'), updateUserProfileImage);
+// update profile image - use multer middleware but make it optional with .any()
+// This allows both file uploads and JSON requests to pass through
+router.put('/updateUserProfileImage', auth, (req, res, next) => {
+    // Check if request is multipart/form-data
+    if (req.is('multipart/form-data')) {
+        upload.single('profileImage')(req, res, next);
+    } else {
+        // Skip multer for JSON requests
+        next();
+    }
+}, updateUserProfileImage);
 
 // instructor Dashboard Details
 router.get('/instructorDashboard', auth, isInstructor, instructorDashboard);

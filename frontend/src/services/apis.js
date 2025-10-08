@@ -267,3 +267,8 @@ export const couponEndpoints = {
   VALIDATE_COUPON_API: BASE_URL + "/api/v1/auth/coupons/validate-and-apply",
   APPLY_COUPON_API: BASE_URL + "/api/v1/auth/coupons/validate-and-apply",
 }
+
+// SYSTEM HEALTH ENDPOINTS
+export const systemHealthEndpoints = {
+  GET_SYSTEM_HEALTH_API: BASE_URL + "/api/v1/system-health/metrics",
+}

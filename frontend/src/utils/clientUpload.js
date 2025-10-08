@@ -22,7 +22,7 @@ const getAuthToken = () => {
  * @param {File} file - The file to upload
  * @param {string} folder - The S3 folder (e.g., 'profiles', 'courses', 'videos')
  * @param {Function} onProgress - Progress callback (0-100)
- * @param {Object} options - Additional options
+ * @param {Object} options - Additional options (abortSignal for cancellation)
  * @returns {Promise<Object>} Upload result with secure_url and metadata
  */
 export const uploadToS3Direct = async (file, folder = '', onProgress = null, options = {}) => {
@@ -49,12 +49,18 @@ export const uploadToS3Direct = async (file, folder = '', onProgress = null, opt
         const { uploadId, signedUrl, filePath, bucket } = signedUrlResponse.data.data;
 
         console.log('✅ Signed URL received:', { uploadId, bucket, filePath });
+        console.log('🔍 AbortSignal state before upload:', {
+            hasSignal: !!options.abortSignal,
+            isAborted: options.abortSignal?.aborted,
+            signalType: typeof options.abortSignal
+        });
 
         // Step 2: Upload directly to S3 (no auth headers needed)
         await axios.put(signedUrl, file, {
             headers: {
                 'Content-Type': file.type,
             },
+            signal: options.abortSignal, // Support for cancellation
             onUploadProgress: (progressEvent) => {
                 if (onProgress && progressEvent.total) {
                     const percentCompleted = Math.round(
@@ -85,6 +91,12 @@ export const uploadToS3Direct = async (file, folder = '', onProgress = null, opt
         return result;
 
     } catch (error) {
+        // Check if the error is due to cancellation
+        if (axios.isCancel(error) || error.name === 'CanceledError' || error.code === 'ERR_CANCELED') {
+            console.log('🚫 Upload cancelled by user');
+            throw new Error('Upload cancelled');
+        }
+        
         console.error('❌ Client-side upload failed:', error);
         
         // Provide user-friendly error messages
@@ -105,7 +117,7 @@ export const uploadToS3Direct = async (file, folder = '', onProgress = null, opt
  * @param {File} file - Image file
  * @param {string} folder - S3 folder
  * @param {Function} onProgress - Progress callback
- * @param {Object} options - Compression options
+ * @param {Object} options - Options including abortSignal for cancellation
  * @returns {Promise<Object>} Upload result
  */
 export const uploadImageToS3 = async (file, folder = 'images', onProgress = null, options = {}) => {
@@ -130,9 +142,10 @@ export const uploadImageToS3 = async (file, folder = 'images', onProgress = null
  * @param {File} file - Video file
  * @param {string} folder - S3 folder
  * @param {Function} onProgress - Progress callback
+ * @param {Object} options - Options including abortSignal for cancellation
  * @returns {Promise<Object>} Upload result with duration
  */
-export const uploadVideoToS3 = async (file, folder = 'videos', onProgress = null) => {
+export const uploadVideoToS3 = async (file, folder = 'videos', onProgress = null, options = {}) => {
     try {
         // Validate it's a video
         const videoExtensions = ['mp4', 'mov', 'avi', 'wmv', 'mkv', 'flv', 'webm'];
@@ -142,7 +155,7 @@ export const uploadVideoToS3 = async (file, folder = 'videos', onProgress = null
             throw new Error('File must be a video');
         }
 
-        const result = await uploadToS3Direct(file, folder, onProgress);
+        const result = await uploadToS3Direct(file, folder, onProgress, options);
 
         // Ensure duration is included
         if (!result.duration && result.duration !== 0) {

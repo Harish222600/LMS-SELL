@@ -76,10 +76,10 @@ export default function ChangeProfilePicture() {
       console.log('✅ Profile image uploaded successfully:', result)
 
       // Update Redux state with new image URL
-      const formData = new FormData()
-      formData.append("imageUrl", result.secure_url || result.url)
+      // Send as JSON instead of FormData since we're only sending the URL
+      const imageUrl = result.secure_url || result.url
       
-      await dispatch(updateUserProfileImage(token, formData))
+      await dispatch(updateUserProfileImage(token, { imageUrl }))
       
       toast.success('Profile picture updated successfully!')
       
