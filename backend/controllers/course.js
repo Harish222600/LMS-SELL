@@ -649,6 +649,15 @@ exports.editCourse = async (req, res) => {
             }
         }
 
+        // Handle instructor change
+        let oldInstructorId = null;
+        let newInstructorId = null;
+        if (updates.instructorId && updates.instructorId !== course.instructor.toString()) {
+            oldInstructorId = course.instructor.toString();
+            newInstructorId = updates.instructorId;
+            console.log(`Instructor change detected: ${oldInstructorId} -> ${newInstructorId}`);
+        }
+
         // Handle JSON fields and other updates
         const updateData = {};
         for (const [key, value] of Object.entries(updates)) {
@@ -669,6 +678,9 @@ exports.editCourse = async (req, res) => {
                         message: `Invalid ${key} format`
                     });
                 }
+            } else if (key === "instructorId") {
+                // Handle instructor field separately
+                updateData.instructor = value;
             } else if (key !== 'courseId' && key !== 'thumbnailImage') {
                 updateData[key] = value;
             }
@@ -682,6 +694,30 @@ exports.editCourse = async (req, res) => {
 
         //   save data
         await course.save()
+
+        // If instructor changed, update the courses array in both old and new instructor's User documents
+        if (oldInstructorId && newInstructorId) {
+            try {
+                // Remove course from old instructor's courses array
+                await User.findByIdAndUpdate(
+                    oldInstructorId,
+                    { $pull: { courses: courseId } },
+                    { new: true }
+                );
+                console.log(`✅ Removed course ${courseId} from old instructor ${oldInstructorId}`);
+
+                // Add course to new instructor's courses array
+                await User.findByIdAndUpdate(
+                    newInstructorId,
+                    { $addToSet: { courses: courseId } }, // Use $addToSet to avoid duplicates
+                    { new: true }
+                );
+                console.log(`✅ Added course ${courseId} to new instructor ${newInstructorId}`);
+            } catch (error) {
+                console.error('Error updating instructor courses arrays:', error);
+                // Don't fail the entire request, but log the error
+            }
+        }
 
         const updatedCourse = await Course.findOne({
             _id: courseId,
