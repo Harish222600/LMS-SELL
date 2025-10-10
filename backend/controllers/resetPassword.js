@@ -142,7 +142,7 @@ exports.resetPasswordToken = async (req, res) => {
             const emailTemplate = resetPasswordTemplate(email, resetUrl, user.firstName || 'User');
             await mailSender(
                 email, 
-                'Reset Your Password - Beeja Learning Platform', 
+                'Reset Your Password - LMS Learning Platform', 
                 emailTemplate
             );
 
@@ -243,13 +243,13 @@ exports.resetPassword = async (req, res) => {
         try {
             await mailSender(
                 user.email,
-                'Password Successfully Reset - Beeja Learning Platform',
+                'Password Successfully Reset - LMS Learning Platform',
                 `
                 <!DOCTYPE html>
                 <html>
                 <head>
                     <meta charset="UTF-8">
-                    <title>Password Reset Successful - Beeja Learning Platform</title>
+                    <title>Password Reset Successful - LMS Learning Platform</title>
                     <style>
                         body {
                             background-color: #f8f9fa;
@@ -451,7 +451,7 @@ exports.resetPassword = async (req, res) => {
                 <body>
                     <div class="container">
                         <div class="header">
-                            <img src="cid:beeja-logo" alt="Beeja Innovative Ventures" class="logo">
+                            <img src="cid:beeja-logo" alt="LMS" class="logo">
                             <h1>🎉 Password Reset Successful</h1>
                         </div>
                         
@@ -459,7 +459,7 @@ exports.resetPassword = async (req, res) => {
                             <div class="greeting">Hello ${user.firstName || 'User'},</div>
                             
                             <div class="message">
-                                Great news! Your password has been successfully reset for your Beeja Learning Platform account.
+                                Great news! Your password has been successfully reset for your LMS Learning Platform account.
                             </div>
 
                             <div class="success-notice">
@@ -486,17 +486,17 @@ exports.resetPassword = async (req, res) => {
 
                             <div class="message">
                                 <strong>⚠️ Important:</strong> If you did not request this password reset, please contact our support team immediately at 
-                                <a href="mailto:info@beejaacademy.com" style="color: #667eea;">info@beejaacademy.com</a>
+                                <a href="mailto:info@LMSacademy.com" style="color: #667eea;">info@LMS.com</a>
                             </div>
                         </div>
 
                         <div class="footer">
-                            <p>This is an automated message from Beeja Learning Platform.</p>
+                            <p>This is an automated message from LMS Learning Platform.</p>
                             <p>If you have any questions or concerns, please contact our support team at:<br>
-                                <a href="mailto:info@beejaacademy.com">info@beejaacademy.com</a>
+                                <a href="mailto:info@LMS.com">info@LMS.com</a>
                             </p>
                             <div class="copyright">
-                                © 2024 Beeja Innovative Ventures. All rights reserved.
+                                © 2024 LMS Innovative Ventures. All rights reserved.
                             </div>
                         </div>
                     </div>

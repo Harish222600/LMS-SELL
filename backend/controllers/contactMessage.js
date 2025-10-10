@@ -28,7 +28,7 @@ exports.submitContactForm = async (req, res) => {
     try {
       await mailSender(
         email,
-        "Thank you for contacting us - Beeja Academy",
+        "Thank you for contacting us - LMS",
         `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">Thank you for reaching out!</h2>
           <p>Dear ${firstname},</p>
@@ -37,7 +37,7 @@ exports.submitContactForm = async (req, res) => {
             <h3>Your Message:</h3>
             <p>${message}</p>
           </div>
-          <p>Best regards,<br>Beeja Academy Team</p>
+          <p>Best regards,<br>LMS Team</p>
         </div>`
       );
     } catch (emailError) {

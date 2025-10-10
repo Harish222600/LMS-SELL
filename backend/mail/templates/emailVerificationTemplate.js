@@ -67,18 +67,18 @@ const otpTemplate = (otp, name) => {
 	<body>
 		<div class="container">
 			<a href=""><img class="logo"
-					src="cid:beeja-logo" alt="Beeja Innovative Ventures"></a>
+					src="cid:beeja-logo" alt="LMS"></a>
 			<div class="message">OTP Verification Email</div>
 			<div class="body">
 				<p>Dear ${name}</p>
-				<p>Thank you for registering with Beeja . To complete your registration, please use the following OTP
+				<p>Thank you for registering with LMS . To complete your registration, please use the following OTP
 					(One-Time Password) to verify your account:</p>
 				<h2 class="highlight">${otp}</h2>
 				<p>This OTP is valid for 3 minutes. If you did not request this verification, please disregard this email.
 				Once your account is verified, you will have access to our platform and its features.</p>
 			</div>
 			<div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
-					href="mailto:info@beejaacademy.com">info@beejaacademy.com</a>. We are here to help!</div>
+					href="mailto:info@LMS.com">info@LMS.com</a>. We are here to help!</div>
 		</div>
 	</body>
 	

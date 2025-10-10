@@ -69,7 +69,7 @@ const faqAnswerTemplate = (userName, question, answer) => {
     </head>
     <body>
         <div class="container">
-            <img class="logo" src="cid:beeja-logo" alt="Beeja Innovative Ventures" style="max-width: 200px; margin-bottom: 20px;">
+            <img class="logo" src="cid:beeja-logo" alt="LMS" style="max-width: 200px; margin-bottom: 20px;">
             <h2>Your FAQ Question Has Been Answered!</h2>
             
             <div class="message">
@@ -95,9 +95,9 @@ const faqAnswerTemplate = (userName, question, answer) => {
             </div>
             
             <div class="footer">
-                <p>Thank you for using Beeja Academy!</p>
+                <p>Thank you for using LMS!</p>
                 <p>If you have any other questions, feel free to ask.</p>
-                <p>Best regards,<br>The Beeja Academy Team</p>
+                <p>Best regards,<br>The LMS Team</p>
             </div>
         </div>
     </body>

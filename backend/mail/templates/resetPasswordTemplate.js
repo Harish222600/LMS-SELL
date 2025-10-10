@@ -4,7 +4,7 @@ exports.resetPasswordTemplate = (email, resetLink, userName = 'User') => {
     
     <head>
         <meta charset="UTF-8">
-        <title>Reset Your Password - Beeja Learning Platform</title>
+        <title>Reset Your Password -LMS Platform</title>
         <style>
             body {
                 background-color: #f8f9fa;
@@ -159,7 +159,7 @@ exports.resetPasswordTemplate = (email, resetLink, userName = 'User') => {
     <body>
         <div class="container">
             <div class="header">
-                <img src="cid:beeja-logo" alt="Beeja Innovative Ventures" style="max-width: 150px; margin-bottom: 15px;">
+                <img src="cid:beeja-logo" alt="LMS" style="max-width: 150px; margin-bottom: 15px;">
                 <h1>🔐 Password Reset Request</h1>
             </div>
             
@@ -167,7 +167,7 @@ exports.resetPasswordTemplate = (email, resetLink, userName = 'User') => {
                 <div class="greeting">Hello ${userName},</div>
                 
                 <div class="message">
-                    We received a request to reset the password for your Beeja Learning Platform account associated with <strong>${email}</strong>.
+                    We received a request to reset the password for your LMS Platform account associated with <strong>${email}</strong>.
                 </div>
 
                 <div class="security-notice">
@@ -211,9 +211,9 @@ exports.resetPasswordTemplate = (email, resetLink, userName = 'User') => {
             </div>
 
             <div class="footer">
-                <p>This email was sent from Beeja Learning Platform. If you have any questions, please contact our support team.</p>
+                <p>This email was sent from LMS Learning Platform. If you have any questions, please contact our support team.</p>
                 <p>
-                    <a href="mailto:info@beejaacademy.com">info@beejaacademy.com</a>
+                    <a href="mailto:info@LMS.com">info@LMS.com</a>
                 </p>
                 <div class="social-links">
                     <a href="#">Privacy Policy</a> | 
@@ -221,7 +221,7 @@ exports.resetPasswordTemplate = (email, resetLink, userName = 'User') => {
                     <a href="#">Help Center</a>
                 </div>
                 <p style="margin-top: 15px; font-size: 12px; color: #999;">
-                    © 2024 Beeja Innovative Ventures. All rights reserved.
+                    © 2024 LMS. All rights reserved.
                 </p>
             </div>
         </div>

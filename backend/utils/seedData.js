@@ -113,9 +113,9 @@ const instructorProfileData = {
 
 // Sample instructor data
 const instructorData = {
-    firstName: "Beeja",
-    lastName: "innovation ventures",
-    email: "beejainnovativeventures@gmail.com",
+    firstName: "ADMIN",
+    lastName: "1",
+    email: "LMS@gmail.com",
     password: "Admin123",
     accountType: "Admin",
     active: true,

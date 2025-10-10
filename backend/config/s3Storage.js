@@ -63,7 +63,7 @@ const getS3FolderForFileType = (mimetype, customFolder, originalname) => {
 const getS3BucketForFileType = (mimetype, customFolder, originalname) => {
     // For now, all files go to the same bucket with different folders
     // This can be expanded later to use different buckets for different file types
-    return process.env.AWS_S3_BUCKET_NAME || 'beejas3';
+    return process.env.AWS_S3_BUCKET_NAME || 'sample-lms-bucket';
 };
 
 // Function to validate file

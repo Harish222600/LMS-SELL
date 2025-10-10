@@ -68,7 +68,7 @@ exports.courseEnrollmentEmail = (courseName, name) => {
     <body>
         <div class="container">
             <a href=""><img class="logo" src="cid:beeja-logo"
-                    alt="Beeja Innovative Ventures"></a>
+                    alt="LMS"></a>
             <div class="message">Course Registration Confirmation</div>
             <div class="body">
                 <p>Dear ${name},</p>
@@ -79,7 +79,7 @@ exports.courseEnrollmentEmail = (courseName, name) => {
                 <a class="cta" href="${process.env.FRONTEND_URL || 'http://35.177.233.147:5173'}/dashboard/enrolled-courses">Go to Dashboard</a>
             </div>
             <div class="support">If you have any questions or need assistance, please feel free to reach out to us at 
-            <a href="mailto:info@beejaacademy.com">info@beejaacademy.com</a>. We are here to help!</div>
+            <a href="mailto:info@LMS.com">info@LMS.com</a>. We are here to help!</div>
         </div>
     </body>
     

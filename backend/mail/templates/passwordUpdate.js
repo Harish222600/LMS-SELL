@@ -4,7 +4,7 @@ exports.passwordUpdated = (email, name = 'User') => {
     
     <head>
         <meta charset="UTF-8">
-        <title>Password Updated Successfully - Beeja Learning Platform</title>
+        <title>Password Updated Successfully - LMS Platform</title>
         <style>
             body {
                 background-color: #f8f9fa;
@@ -185,7 +185,7 @@ exports.passwordUpdated = (email, name = 'User') => {
     <body>
         <div class="container">
             <div class="header">
-                <img src="cid:beeja-logo" alt="Beeja Innovative Ventures" class="logo">
+                <img src="cid:beeja-logo" alt="LMS" class="logo">
                 <h1>🔐 Password Successfully Updated</h1>
             </div>
             
@@ -193,7 +193,7 @@ exports.passwordUpdated = (email, name = 'User') => {
                 <div class="greeting">Hello ${name},</div>
                 
                 <div class="message">
-                    Your password for the Beeja Learning Platform account associated with <strong>${email}</strong> has been successfully updated.
+                    Your password for the LMS Learning Platform account associated with <strong>${email}</strong> has been successfully updated.
                 </div>
 
                 <div class="security-notice">
@@ -204,7 +204,7 @@ exports.passwordUpdated = (email, name = 'User') => {
                 <div class="security-tips">
                     <h3>🛡️ Security Tips</h3>
                     <ul>
-                        <li><strong>Keep it Secret:</strong> Never share your password with anyone, including Beeja support staff.</li>
+                        <li><strong>Keep it Secret:</strong> Never share your password with anyone, including LMS support staff.</li>
                         <li><strong>Stay Unique:</strong> Use different passwords for different accounts to enhance security.</li>
                         <li><strong>Enable 2FA:</strong> Consider enabling two-factor authentication for an extra layer of security.</li>
                         <li><strong>Monitor Activity:</strong> Regularly check your account activity for any suspicious behavior.</li>
@@ -214,12 +214,12 @@ exports.passwordUpdated = (email, name = 'User') => {
             </div>
 
             <div class="footer">
-                <p>This is an automated message from Beeja Learning Platform.</p>
+                <p>This is an automated message from LMS Learning Platform.</p>
                 <p>If you have any questions or concerns, please contact our support team at:<br>
-                    <a href="mailto:info@beejaacademy.com">info@beejaacademy.com</a>
+                    <a href="mailto:info@LMS.com">info@LMS.com</a>
                 </p>
                 <div class="copyright">
-                    © 2024 Beeja Innovative Ventures. All rights reserved.
+                    © 2024 LMS. All rights reserved.
                 </div>
             </div>
         </div>
