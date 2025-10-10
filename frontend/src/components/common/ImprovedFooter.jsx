@@ -41,8 +41,8 @@ const socialLinks = [
 
 const contactInfo = [
   { icon: FaEnvelope, text: "info@lms.com", href: "mailto:info@lms.com" },
-  { icon: FaPhone, text: "+91 91502 74222", href: "tel:+919150274222" },
-  { icon: FaMapMarkerAlt, text: "No.2, 2nd Floor, Gokul Arcade Sardar Patel Road, Adyar, Chennai - 600020", href: "https://www.google.com/maps/place/LMS" },
+  { icon: FaPhone, text: "+1 (555) 123-4567", href: "tel:+15551234567" },
+  { icon: FaMapMarkerAlt, text: "123 Sample Street, Business District, Sample City, SC 12345", href: "https://www.google.com/maps" },
 ];
 
 const quickStats = [
@@ -288,7 +288,7 @@ const ImprovedFooter = () => {
               <div className="flex items-center gap-6 text-sm text-academic-slate-400">
                 <div className="flex items-center gap-2">
                   <FaHeart className="text-academic-gold-400" />
-                  <span>Made with love in Chennai</span>
+                  <span>Made with love</span>
                 </div>
                 <span>© {new Date().getFullYear()} LMS. All rights reserved.</span>
               </div>

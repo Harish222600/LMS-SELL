@@ -34,9 +34,9 @@ const contactMethods = [
     icon: FaPhone,
     title: "Call Us",
     description: "Speak with our team",
-    details: "+91 91502 74222",
+    details: "+1 (555) 123-4567",
     action: "Call Now",
-    href: "tel:+919150274222",
+    href: "tel:+15551234567",
     color: "bg-green-500"
   },
   {
@@ -52,16 +52,16 @@ const contactMethods = [
 
 const officeLocations = [
   {
-    type: "Marketing Office",
-    address: "No.2, 2nd Floor, Gokul Arcade Sardar Patel Road, Adyar, Chennai 600020",
-    mapUrl: "https://maps.app.goo.gl/izs9QjGre23YJPoXA",
-    iframe: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3938.8665540202246!2d80.23958003308385!3d12.956588031160546!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525d17a2d0336b%3A0x7e844a0c331cb391!2sBeeja%20Academy!5e1!3m2!1sen!2sin!4v1748981812254!5m2!1sen!2sin"
+    type: "Main Office",
+    address: "123 Sample Street, Business District, Sample City, SC 12345",
+    mapUrl: "https://maps.google.com",
+    iframe: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1841!2d-73.9857!3d40.7484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM40zMCcxOC4yIk4gNzPCsDU5JzA4LjUiVw!5e0!3m2!1sen!2sus!4v1234567890"
   },
   {
     type: "Training Centre",
-    address: "No 31, Panchayat Main Road, Near Jain Anumitha Apartments, Perungudi, Chennai, Tamil Nadu 600096",
-    mapUrl: "https://maps.app.goo.gl/uwz84s88kipS2MsK7",
-    iframe: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3938.078403000359!2d80.2544201751349!3d13.006325287312254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5267f3d1715661%3A0x8171b63cf3e5a7af!2sBeeja%20Academy!5e1!3m2!1sen!2sin!4v1748982487813!5m2!1sen!2sin"
+    address: "456 Learning Avenue, Education Hub, Sample City, SC 67890",
+    mapUrl: "https://maps.google.com",
+    iframe: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1841!2d-73.9857!3d40.7484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM40zMCcxOC4yIk4gNzPCsDU5JzA4LjUiVw!5e0!3m2!1sen!2sus!4v1234567890"
   }
 ]
 
@@ -231,7 +231,7 @@ const Contact = () => {
                   <HighlightText text=" Offices" variant="gold" />
                 </h3>
                 <p className="text-academic-slate-600 mb-8">
-                  Come visit us at our locations in Chennai for in-person consultations.
+                  Come visit us at our locations for in-person consultations.
                 </p>
               </div>
 

@@ -361,7 +361,7 @@ function BundleCheckout() {
                     ) : (
                       <div>
                         <p className="font-semibold">Secure Payment</p>
-                        <p className="text-xs text-academic-slate-500 mt-1">Powered by Razorpay</p>
+                        <p className="text-xs text-academic-slate-500 mt-1">Powered by Payment Gateway</p>
                         {freeCourses.length > 0 && (
                           <p className="text-xs text-academic-gold-700 mt-2 font-medium">
                             Note: Free course access will be requested after payment completion

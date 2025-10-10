@@ -307,7 +307,7 @@ export default function OrderViewModal({ order, onClose }) {
                   <p>Company Information</p>
                 </div>
                 <p><strong>LMS</strong> - Excellence in Education<br>
-                Contact: DineshKumar | Phone: +91 9585113955 | Email: dinesh@lms.com<br>
+                Contact: Sample Admin | Phone: +1 (555) 987-6543 | Email: admin@lms.com<br>
                 Website: www.lms.com<br><br>
                 Thank you for choosing LMS! This is a computer-generated invoice.</p>
               </div>
@@ -380,9 +380,9 @@ export default function OrderViewModal({ order, onClose }) {
               </h3>
               <div className="space-y-2">
                 <p className="font-bold text-academic-navy-900 text-lg font-playfair">LMS</p>
-                <p className="text-academic-slate-600">DineshKumar</p>
-                <p className="text-academic-slate-600">📞 +91 9585113955</p>
-                <p className="text-academic-slate-600">✉️ dinesh@lms.com</p>
+                <p className="text-academic-slate-600">Sample Admin</p>
+                <p className="text-academic-slate-600">📞 +1 (555) 987-6543</p>
+                <p className="text-academic-slate-600">✉️ admin@lms.com</p>
                 <p className="text-academic-slate-600">🌐 www.lms.com</p>
               </div>
             </div>
@@ -493,15 +493,15 @@ export default function OrderViewModal({ order, onClose }) {
               <div className="flex flex-col md:flex-row items-center justify-center gap-6 text-sm mb-6">
                 <div className="flex items-center gap-2">
                   <span className="text-academic-gold-600">📧</span>
-                  <a href="mailto:dinesh@lms.com" className="text-academic-navy-700 hover:text-academic-navy-900 transition-colors font-medium">
-                    dinesh@lms.com
+                  <a href="mailto:admin@lms.com" className="text-academic-navy-700 hover:text-academic-navy-900 transition-colors font-medium">
+                    admin@lms.com
                   </a>
                 </div>
                 <div className="hidden md:block text-academic-slate-400">|</div>
                 <div className="flex items-center gap-2">
                   <span className="text-academic-gold-600">📱</span>
-                  <a href="tel:+919585113955" className="text-academic-navy-700 hover:text-academic-navy-900 transition-colors font-medium">
-                    +91 9585113955
+                  <a href="tel:+15559876543" className="text-academic-navy-700 hover:text-academic-navy-900 transition-colors font-medium">
+                    +1 (555) 987-6543
                   </a>
                 </div>
               </div>

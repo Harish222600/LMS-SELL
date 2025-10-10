@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import { formatDate } from '../../../utils/dateFormatter';
-import { beejaLogo, isoLogo, msmeLogo, founderSign } from '../../../assets/Images/certification img';
+import { isoLogo, msmeLogo, founderSign } from '../../../assets/Images/certification img';
 
 export default function CourseCertificate({ certificateData }) {
   const [qrCodeUrl, setQrCodeUrl] = useState('');
@@ -29,7 +29,7 @@ export default function CourseCertificate({ certificateData }) {
       
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <img src={beejaLogo} alt="LMS Logo" className="h-16" />
+        <div className="text-2xl font-bold text-yellow-600">Sample LMS</div>
         <div className="text-right">
           <p className="text-sm">Certificate ID:</p>
           <p className="font-semibold">{certificateData?.certificateId || 'LMS-XXXX-XXX'}</p>

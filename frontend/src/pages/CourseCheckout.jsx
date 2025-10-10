@@ -237,7 +237,7 @@ function CourseCheckout() {
                   </div>
                   <div>
                     <p className="font-semibold">Secure Payment</p>
-                    <p className="text-xs text-academic-slate-500">Powered by Razorpay</p>
+                    <p className="text-xs text-academic-slate-500">Powered by Payment Gateway</p>
                   </div>
                 </div>
               </div>

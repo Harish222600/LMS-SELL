@@ -53,7 +53,7 @@ export default function InternshipCertificate({ certificateData }) {
               </div>
             </div>
             <div className="text-right">
-              <h1 className="text-3xl font-bold text-indigo-900">CodSoft</h1>
+              <h1 className="text-3xl font-bold text-indigo-900">Sample Company</h1>
             </div>
           </div>
         </div>
@@ -78,10 +78,10 @@ export default function InternshipCertificate({ certificateData }) {
             has successfully completed <span className="font-semibold">4 weeks</span> of a virtual Course program in
           </p>
           <h4 className="text-2xl font-bold text-gray-800 my-3">
-            {certificateData?.courseName || 'Web Development'}
+            {certificateData?.courseName || 'Sample Course Name'}
           </h4>
           <p className="text-lg text-gray-700 leading-relaxed">
-            with wonderful remarks at <span className="font-bold">CODSOFT</span> from{' '}
+            with wonderful remarks at <span className="font-bold">Sample Company</span> from{' '}
             <span className="font-semibold">15/05/2025</span> to{' '}
             <span className="font-semibold">15/06/2025</span>.
           </p>
@@ -136,8 +136,8 @@ export default function InternshipCertificate({ certificateData }) {
 
           {/* Contact Information */}
           <div className="flex justify-between items-center mt-8 text-sm text-gray-600">
-            <span>contact@codsoft.in</span>
-            <span>www.codsoft.in</span>
+            <span>contact@sample.com</span>
+            <span>www.sample.com</span>
             <span>Date: {formatDate(certificateData?.completionDate) || '18/06/2025'}</span>
           </div>
         </div>

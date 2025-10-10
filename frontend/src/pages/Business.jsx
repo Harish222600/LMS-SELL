@@ -240,10 +240,10 @@ const Business = () => {
                 <div className="text-left">
                   <p className="text-sm font-medium text-academic-slate-600">Call us at</p>
                   <a 
-                    href="tel:+919585113955" 
+                    href="tel:+15559876543" 
                     className="text-academic-gold-700 font-bold hover:text-academic-gold-800 transition-colors"
                   >
-                    +91 9585113955
+                    +1 (555) 987-6543
                   </a>
                 </div>
               </div>

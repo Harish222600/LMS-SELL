@@ -54,9 +54,9 @@ export default function ModernInternshipCertificate({ certificateData }) {
             </div>
             <div>
               <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
-                CODSOFT
+                SAMPLE LMS
               </h1>
-              <p className="text-xs text-gray-500 font-medium">TECHNOLOGY SOLUTIONS</p>
+              <p className="text-xs text-gray-500 font-medium">LEARNING PLATFORM</p>
             </div>
           </div>
         </div>
@@ -92,11 +92,11 @@ export default function ModernInternshipCertificate({ certificateData }) {
           </p>
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 my-4">
             <h4 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
-              {certificateData?.courseName || 'Web Development'}
+              {certificateData?.courseName || 'Sample Course Name'}
             </h4>
           </div>
           <p className="text-lg text-gray-700 leading-relaxed">
-            with wonderful remarks at <span className="font-bold text-purple-600">CODSOFT</span> from{' '}
+            with wonderful remarks at <span className="font-bold text-purple-600">Sample LMS</span> from{' '}
             <span className="font-semibold text-blue-600">15/05/2025</span> to{' '}
             <span className="font-semibold text-blue-600">15/06/2025</span>
           </p>
@@ -152,9 +152,9 @@ export default function ModernInternshipCertificate({ certificateData }) {
           <div className="flex justify-between items-center text-sm text-gray-500 border-t border-gray-200 pt-4">
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-              contact@codsoft.in
+              contact@samplelms.com
             </span>
-            <span className="font-medium text-gray-700">www.codsoft.in</span>
+            <span className="font-medium text-gray-700">www.samplelms.com</span>
             <span className="flex items-center gap-1">
               <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
               Date: {formatDate(certificateData?.completionDate) || '18/06/2025'}

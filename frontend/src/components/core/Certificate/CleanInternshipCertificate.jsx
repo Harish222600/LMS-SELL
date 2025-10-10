@@ -58,15 +58,6 @@ export default function CleanInternshipCertificate({ certificateData }) {
         gap: '12px',
         pointerEvents: 'none'
       }}>
-        <img 
-          src="/beejalogo.png" 
-          alt="LMS Watermark" 
-          style={{
-            width: '200px',
-            height: '200px',
-            objectFit: 'contain'
-          }}
-        />
         <div style={{
           fontWeight: '700',
           fontSize: '3rem',
@@ -76,7 +67,7 @@ export default function CleanInternshipCertificate({ certificateData }) {
           letterSpacing: '0.1em',
           opacity: '0.20',
         }}>
-          LMS
+          SAMPLE LMS
         </div>
       </div>
 
@@ -194,15 +185,6 @@ export default function CleanInternshipCertificate({ certificateData }) {
           alignItems: 'center',
           gap: '12px'
         }}>
-          <img 
-            src="/beejalogo.png" 
-            alt="LMS Logo" 
-            style={{
-              width: '64px',
-              height: '70px',
-              objectFit: 'cover'
-            }}
-          />
           <div style={{
             fontFamily: "'Raleway', 'Lato', sans-serif",
             fontWeight: '600',
@@ -211,7 +193,7 @@ export default function CleanInternshipCertificate({ certificateData }) {
             userSelect: 'none',
             letterSpacing: '0.05em'
           }}>
-            LMS
+            Sample LMS
           </div>
         </div>
 
@@ -394,14 +376,14 @@ export default function CleanInternshipCertificate({ certificateData }) {
             color: '#7a6fff',
             letterSpacing: '0.3px'
           }}>
-            www.lms.com
+            www.samplelms.com
           </div>
           <div style={{
             fontSize: '0.8rem',
             color: '#666',
             fontWeight: '500'
           }}>
-            info@lms.com
+            info@samplelms.com
           </div>
         </div>
 

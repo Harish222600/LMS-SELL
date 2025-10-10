@@ -88,8 +88,8 @@ const Support = () => {
       icon: <FaPhone className="text-3xl text-academic-navy-600" />,
       title: "Phone Support",
       description: "Speak directly with our team",
-      contact: "+91 9150274222",
-      responseTime: "Mon-Fri, 9 AM - 6 PM IST",
+      contact: "+1 (555) 123-4567",
+      responseTime: "Mon-Fri, 9 AM - 6 PM",
       action: "Call Now"
     },
     {
