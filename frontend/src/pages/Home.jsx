@@ -91,11 +91,7 @@ const Home = () => {
                   
                   <h1 className="classic-heading text-5xl md:text-6xl lg:text-7xl leading-tight">
                     Master Skills with
-                    <HighlightText text=" Beeja " variant="elegant" />
-                    <br />
-                    <span className="text-academic-slate-700 text-4xl md:text-5xl lg:text-6xl">
-                      Academy
-                    </span>
+                    <HighlightText text=" LMS" variant="elegant" />
                   </h1>
                   
                   <p className="section-subtitle text-xl md:text-2xl max-w-2xl leading-relaxed">
@@ -179,7 +175,7 @@ const Home = () => {
                         <span className="ml-2 text-academic-slate-400">live-coding.js</span>
                       </div>
                       <div className="space-y-1">
-                        <div className="text-academic-gold-400">const learnWithBeeja = () {'=>'} {'{'}</div>
+                        <div className="text-academic-gold-400">const learnWithLMS = () {'=>'} {'{'}</div>
                         <div className="text-green-400 ml-4">return "Success!";</div>
                         <div className="text-blue-400">{'}'}</div>
                       </div>
@@ -214,7 +210,7 @@ const Home = () => {
             >
               <h2 className="classic-heading mb-4">
                 Why Choose
-                <HighlightText text=" Beeja Academy" variant="gold" />
+                <HighlightText text=" LMS" variant="gold" />
               </h2>
               <p className="section-subtitle max-w-3xl mx-auto">
                 Experience learning like never before with our comprehensive platform designed for modern professionals
@@ -324,10 +320,10 @@ const Home = () => {
                     <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                     <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <span className="ml-2 text-academic-slate-400">beeja-project.js</span>
+                    <span className="ml-2 text-academic-slate-400">lms-project.js</span>
                   </div>
                   <div className="space-y-2 text-sm">
-                    <div className="text-purple-400">// Welcome to Beeja Academy</div>
+                    <div className="text-purple-400">// Welcome to LMS</div>
                     <div className="text-blue-400">const buildFuture = () {'=>'} {'{'}</div>
                     <div className="text-green-400 ml-4">console.log("Learning never stops!");</div>
                     <div className="text-yellow-400 ml-4">return success;</div>
@@ -519,7 +515,7 @@ const Home = () => {
                 <span className="text-academic-slate-600 text-lg">4.9/5 from 10,000+ reviews</span>
               </div>
               <p className="section-subtitle max-w-3xl mx-auto">
-                Join thousands of successful learners who have transformed their careers with Beeja Academy
+                Join thousands of successful learners who have transformed their careers with LMS
               </p>
             </motion.div>
             <ReviewSlider />
@@ -541,7 +537,7 @@ const Home = () => {
                 <HighlightText text=" Future?" variant="gold" />
               </h2>
               <p className="section-subtitle text-academic-slate-200 text-xl max-w-2xl mx-auto">
-                Join over 25,000 students who are already building their dream careers with Beeja Academy
+                Join over 25,000 students who are already building their dream careers with LMS
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
                 <CTAButton active={true} linkto={"/signup"} variant="elegant" className="w-full sm:w-auto">

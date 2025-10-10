@@ -101,7 +101,7 @@ const ClassicNavbar = () => {
                 <img
                   src={BeejaLogo}
                   loading="lazy"
-                  alt="BeejaAcademy Logo"
+                  alt="LMS Logo"
                   className="h-12 w-auto max-w-[140px] object-contain transition-all duration-300 hover:opacity-80"
                 />
               </Link>

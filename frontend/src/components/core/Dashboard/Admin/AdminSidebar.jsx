@@ -637,11 +637,11 @@ const AdminSidebar = ({ activeTab, onTabChange }) => {
                           <div className="flex items-center justify-center gap-2 mb-2">
                             <FaGem className="text-blue-500 w-4 h-4" />
                             <span className="text-sm font-bold text-blue-600">
-                              Beeja Admin
+                              LMS Admin
                             </span>
                           </div>
                           <p className="text-xs text-slate-400">
-                            © 2024 Beeja Innovation Ventures
+                            © 2024 LMS
                           </p>
                         </div>
                       </motion.div>

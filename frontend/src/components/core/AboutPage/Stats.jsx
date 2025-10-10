@@ -77,7 +77,7 @@ const StatsComponent = () => {
           className="text-center mt-12"
         >
           <p className="text-academic-slate-300 text-lg max-w-3xl mx-auto">
-            Join thousands of learners who have transformed their careers with Beeja Academy's 
+            Join thousands of learners who have transformed their careers with LMS's 
             comprehensive educational programs and expert guidance.
           </p>
           

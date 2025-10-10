@@ -55,7 +55,7 @@ const BenefitsForEmployers = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className='section-subtitle text-xl text-academic-slate-600 max-w-3xl mx-auto'
           >
-            Partner with Beeja Academy to access top talent and transform your workforce with our comprehensive training programs
+            Partner with LMS to access top talent and transform your workforce with our comprehensive training programs
           </motion.p>
         </div>
 

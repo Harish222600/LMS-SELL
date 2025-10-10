@@ -19,7 +19,7 @@ const PrivacyPolicy = () => {
       content: (
         <div className="space-y-4">
           <p className="text-academic-slate-700 leading-relaxed">
-            At Beeja Academy, we understand the importance of safeguarding your personal information. 
+            At LMS, we understand the importance of safeguarding your personal information. 
             This Privacy Policy outlines our approach to data protection and privacy to fulfill our 
             obligations under applicable laws and regulations.
           </p>
@@ -328,7 +328,7 @@ const PrivacyPolicy = () => {
           <div className="bg-academic-navy-50 border border-academic-navy-300 p-6 rounded-xl">
             <p className="text-academic-navy-800 text-sm leading-relaxed">
               To exercise any of these rights, please contact us at 
-              <span className="font-bold"> privacy@beejaacademy.com</span>. 
+              <span className="font-bold"> privacy@lms.com</span>. 
               We will respond to your request within 30 days.
             </p>
           </div>
@@ -531,11 +531,11 @@ const PrivacyPolicy = () => {
                 we're here to help. Contact our privacy team directly.
               </p>
               <a 
-                href="mailto:privacy@beejaacademy.com"
+                href="mailto:privacy@lms.com"
                 className="inline-flex items-center gap-3 bg-academic-gold-500 text-academic-navy-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-academic-gold-400 transition-colors duration-300 shadow-elegant"
               >
                 <FaEnvelope />
-                privacy@beejaacademy.com
+                privacy@lms.com
               </a>
             </div>
           </div>

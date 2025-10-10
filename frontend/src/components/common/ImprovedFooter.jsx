@@ -31,18 +31,18 @@ import BeejaLogo from "../../assets/Logo/Logo-Small-Light.png";
 const BottomFooter = ["Privacy Policy", "Terms"];
 
 const socialLinks = [
-  { icon: FaFacebookF, href: "https://facebook.com/beeja", color: "hover:bg-blue-600", name: "Facebook" },
-  { icon: FaTwitter, href: "https://twitter.com/beeja", color: "hover:bg-blue-400", name: "Twitter" },
-  { icon: FaLinkedinIn, href: "https://linkedin.com/company/beeja", color: "hover:bg-blue-700", name: "LinkedIn" },
-  { icon: FaGithub, href: "https://github.com/beeja", color: "hover:bg-gray-700", name: "GitHub" },
-  { icon: FaYoutube, href: "https://www.youtube.com/@beejachennai", color: "hover:bg-red-600", name: "YouTube" },
-  { icon: FaInstagram, href: "https://instagram.com/beeja", color: "hover:bg-pink-600", name: "Instagram" },
+  { icon: FaFacebookF, href: "https://facebook.com/lms", color: "hover:bg-blue-600", name: "Facebook" },
+  { icon: FaTwitter, href: "https://twitter.com/lms", color: "hover:bg-blue-400", name: "Twitter" },
+  { icon: FaLinkedinIn, href: "https://linkedin.com/company/lms", color: "hover:bg-blue-700", name: "LinkedIn" },
+  { icon: FaGithub, href: "https://github.com/lms", color: "hover:bg-gray-700", name: "GitHub" },
+  { icon: FaYoutube, href: "https://www.youtube.com/@lms", color: "hover:bg-red-600", name: "YouTube" },
+  { icon: FaInstagram, href: "https://instagram.com/lms", color: "hover:bg-pink-600", name: "Instagram" },
 ];
 
 const contactInfo = [
-  { icon: FaEnvelope, text: "info@beejaacademy.com", href: "mailto:info@beejaacademy.com" },
+  { icon: FaEnvelope, text: "info@lms.com", href: "mailto:info@lms.com" },
   { icon: FaPhone, text: "+91 91502 74222", href: "tel:+919150274222" },
-  { icon: FaMapMarkerAlt, text: "No.2, 2nd Floor, Gokul Arcade Sardar Patel Road, Adyar, Chennai - 600020", href: "https://www.google.com/maps/place/Beeja+Academy" },
+  { icon: FaMapMarkerAlt, text: "No.2, 2nd Floor, Gokul Arcade Sardar Patel Road, Adyar, Chennai - 600020", href: "https://www.google.com/maps/place/LMS" },
 ];
 
 const quickStats = [
@@ -108,11 +108,11 @@ const ImprovedFooter = () => {
                   <div className="flex items-center gap-3">
                     <img 
                       src={BeejaLogo} 
-                      alt="Beeja Academy" 
+                      alt="LMS" 
                       className="h-10 object-contain" 
                     />
                     <div>
-                      <h3 className="text-xl font-bold text-white">Beeja Academy</h3>
+                      <h3 className="text-xl font-bold text-white">LMS</h3>
                       <p className="text-academic-gold-400 text-sm">Empowering Future Leaders</p>
                     </div>
                   </div>
@@ -290,7 +290,7 @@ const ImprovedFooter = () => {
                   <FaHeart className="text-academic-gold-400" />
                   <span>Made with love in Chennai</span>
                 </div>
-                <span>© {new Date().getFullYear()} Beeja Academy. All rights reserved.</span>
+                <span>© {new Date().getFullYear()} LMS. All rights reserved.</span>
               </div>
             </motion.div>
           </div>

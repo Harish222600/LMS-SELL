@@ -279,11 +279,11 @@ export default function Sidebar() {
                           <div className="flex items-center justify-center gap-2 mb-2">
                             <FaGraduationCap className="text-academic-navy-600 w-4 h-4" />
                             <span className="text-sm font-bold text-academic-navy-700">
-                              Beeja Academy
+                              LMS
                             </span>
                           </div>
                           <p className="text-xs text-academic-slate-400">
-                            © 2024 Beeja Innovation Ventures
+                            © 2024 LMS
                           </p>
                         </div>
                       </motion.div>

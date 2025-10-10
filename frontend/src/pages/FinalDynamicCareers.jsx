@@ -446,7 +446,7 @@ const FinalDynamicCareers = () => {
               }
             }}
           >
-            Why Choose <span className="text-academic-gold-600">Beeja?</span>
+            Why Choose <span className="text-academic-gold-600">LMS?</span>
           </motion.h2>
           <motion.p 
             className="text-academic-slate-600 text-center mb-16 max-w-3xl mx-auto text-lg leading-relaxed"
@@ -461,7 +461,7 @@ const FinalDynamicCareers = () => {
               }
             }}
           >
-            We're not just building a company; we're creating the future of education. Here's what makes Beeja special.
+            We're not just building a company; we're creating the future of education. Here's what makes LMS special.
           </motion.p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">

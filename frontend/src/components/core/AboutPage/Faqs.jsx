@@ -23,23 +23,23 @@ const FAQSection = () => {
   // Fallback FAQ data in case API fails
   const fallbackFaqData = [
     {
-      question: "How does Beeja ensure the quality of its courses?",
-      answer: "At Beeja, course quality is our priority. We collaborate with industry experts to design and update our curriculum, ensuring it aligns with the latest trends and standards. Our rigorous review process includes user feedback and continuous assessments. Rest assured, our commitment to providing high-quality, relevant content ensures an enriching learning experience for our users, preparing them for success in their chosen fields."
+      question: "How does LMS ensure the quality of its courses?",
+      answer: "At LMS, course quality is our priority. We collaborate with industry experts to design and update our curriculum, ensuring it aligns with the latest trends and standards. Our rigorous review process includes user feedback and continuous assessments. Rest assured, our commitment to providing high-quality, relevant content ensures an enriching learning experience for our users, preparing them for success in their chosen fields."
     },
     {
-      question: "How does Beeja stand out from other online learning platforms?",
-      answer: "Beeja distinguishes itself through a combination of diverse, expert-curated content and an interactive learning environment. Our courses are crafted by industry professionals, ensuring real-world relevance. We prioritize user engagement with interactive elements, fostering a dynamic and effective learning experience. Additionally, personalized learning paths cater to individual needs."
+      question: "How does LMS stand out from other online learning platforms?",
+      answer: "LMS distinguishes itself through a combination of diverse, expert-curated content and an interactive learning environment. Our courses are crafted by industry professionals, ensuring real-world relevance. We prioritize user engagement with interactive elements, fostering a dynamic and effective learning experience. Additionally, personalized learning paths cater to individual needs."
     },
     {
-      question: "What types of learning formats does Beeja offer?",
-      answer: "Beeja offers a diverse range of learning formats including video lectures, interactive assignments, live sessions, hands-on projects, and peer collaboration opportunities. Our platform supports both self-paced learning and structured courses, complemented by practical exercises and real-world case studies to ensure comprehensive skill development."
+      question: "What types of learning formats does LMS offer?",
+      answer: "LMS offers a diverse range of learning formats including video lectures, interactive assignments, live sessions, hands-on projects, and peer collaboration opportunities. Our platform supports both self-paced learning and structured courses, complemented by practical exercises and real-world case studies to ensure comprehensive skill development."
     },
     {
-      question: "How does Beeja ensure the accessibility of its courses for learners with different schedules?",
+      question: "How does LMS ensure the accessibility of its courses for learners with different schedules?",
       answer: "We understand the importance of flexibility in learning. Our platform offers 24/7 access to course materials, allowing learners to study at their own pace. Content is available on multiple devices, and courses are structured in digestible modules. We also provide downloadable resources and mobile-friendly content for learning on-the-go."
     },
     {
-      question: "Can I get a refund if I'm unsatisfied with a course on Beeja?",
+      question: "Can I get a refund if I'm unsatisfied with a course on LMS?",
       answer: "Yes, we offer a satisfaction guarantee. If you're unsatisfied with your course, you can request a refund within the first 7 days of purchase. Our support team will guide you through the refund process and gather feedback to help us improve our offerings. Terms and conditions apply to specific courses and circumstances."
     }
   ]

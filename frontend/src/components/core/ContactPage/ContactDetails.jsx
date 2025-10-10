@@ -8,7 +8,7 @@ const contactDetails = [
     icon: "HiChatBubbleLeftRight",
     heading: "Chat on us",
     description: "Our friendly team is here to help.",
-    details: ["info@beejaacademy.com"],
+    details: ["info@lms.com"],
   },
   {
     icon: "BiWorld",
@@ -40,7 +40,7 @@ const contactDetails = [
     icon: "IoPeopleSharp",
     heading: "Partnership Request",
     description: "For partnership and business development inquiries",
-    details: ["partner@beejaacademy.com", "8056015925"],
+    details: ["partner@lms.com", "8056015925"],
   },
 ]
 

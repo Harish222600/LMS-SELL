@@ -56,7 +56,7 @@ export default function QuickLinks() {
           className="text-center mt-8 pt-6 border-t border-academic-slate-600"
         >
           <p className="text-academic-slate-400 text-xs">
-            © 2024 Beeja Academy - Excellence in Education
+            © 2024 LMS - Excellence in Education
           </p>
         </motion.div>
       </div>

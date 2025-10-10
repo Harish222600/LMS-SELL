@@ -19,7 +19,7 @@ const Terms = () => {
       content: (
         <div className="space-y-4">
           <p className="text-academic-slate-700 leading-relaxed">
-            By accessing and using Beeja Academy's platform, you acknowledge that you have read, 
+            By accessing and using LMS's platform, you acknowledge that you have read, 
             understood, and agree to be bound by these Terms of Service and our Privacy Policy.
           </p>
           <div className="bg-academic-navy-50 border border-academic-navy-300 p-6 rounded-xl">
@@ -125,7 +125,7 @@ const Terms = () => {
               <h4 className="font-bold text-academic-navy-900 mb-3">Our Content</h4>
               <ul className="list-disc pl-6 space-y-2 text-academic-slate-700 text-sm">
                 <li>Videos, text, and course materials</li>
-                <li>Beeja Academy trademarks and logos</li>
+                <li>LMS trademarks and logos</li>
                 <li>Platform design and functionality</li>
                 <li>Assessment and quiz content</li>
               </ul>
@@ -220,7 +220,7 @@ const Terms = () => {
           <div className="bg-academic-gold-50 border border-academic-gold-300 p-6 rounded-xl">
             <p className="text-academic-gold-800 text-sm leading-relaxed">
               <strong>Reporting:</strong> If you discover any security vulnerabilities, 
-              please report them to security@beejaacademy.com immediately.
+              please report them to security@lms.com immediately.
             </p>
           </div>
         </div>
@@ -360,7 +360,7 @@ const Terms = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Please read these terms carefully before using our platform. They govern your use of Beeja Academy's 
+            Please read these terms carefully before using our platform. They govern your use of LMS's 
             services and outline our mutual rights and responsibilities.
           </motion.p>
         </div>
@@ -466,11 +466,11 @@ const Terms = () => {
                 on any provisions, our legal team is here to help.
               </p>
               <a 
-                href="mailto:legal@beejaacademy.com"
+                href="mailto:legal@lms.com"
                 className="inline-flex items-center gap-3 bg-academic-gold-500 text-academic-navy-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-academic-gold-400 transition-colors duration-300 shadow-elegant"
               >
                 <FaEnvelope />
-                legal@beejaacademy.com
+                legal@lms.com
               </a>
             </div>
           </div>

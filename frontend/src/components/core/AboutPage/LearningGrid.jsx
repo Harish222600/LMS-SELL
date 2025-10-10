@@ -9,7 +9,7 @@ const LearningGridArray = [
     heading: "World-Class Learning for",
     highlightText: "Anyone, Anywhere",
     description:
-      "BeejaAcademy partners with more than 275+ leading universities and companies to bring flexible, affordable, job-relevant online learning to individuals and organizations worldwide.",
+      "LMS partners with more than 275+ leading universities and companies to bring flexible, affordable, job-relevant online learning to individuals and organizations worldwide.",
     BtnText: "Learn More",
     BtnLink: "/",
   },

@@ -80,7 +80,7 @@ const Support = () => {
       icon: <FaEnvelope className="text-3xl text-academic-gold-600" />,
       title: "Email Support",
       description: "Get detailed help via email",
-      contact: "support@beejaacademy.com",
+      contact: "support@lms.com",
       responseTime: "Within 24 hours",
       action: "Send Email"
     },

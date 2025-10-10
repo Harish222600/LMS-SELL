@@ -61,7 +61,7 @@ const ContactFormSection = () => {
                   <span className="text-academic-navy-700 text-xl">📧</span>
                 </div>
                 <h3 className="font-semibold text-academic-navy-900">Email Us</h3>
-                <p className="text-sm text-academic-slate-600">info@beejaacademy.com</p>
+                <p className="text-sm text-academic-slate-600">info@lms.com</p>
               </div>
               
               <div className="space-y-2">

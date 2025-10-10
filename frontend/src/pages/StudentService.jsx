@@ -206,7 +206,7 @@ const StudentService = () => {
                   </div>
                   <div className="font-mono text-sm text-academic-gold-400">
                     <div className="text-blue-400">const</div>
-                    <div className="text-white ml-4">learnWithBeeja = function() {`{`}</div>
+                    <div className="text-white ml-4">learnWithLMS = function() {`{`}</div>
                     <div className="text-white ml-8">return "Success!";</div>
                     <div className="text-white ml-4">{`}`}</div>
                   </div>
@@ -233,7 +233,7 @@ const StudentService = () => {
           >
             <h2 className="classic-heading text-3xl md:text-4xl text-academic-navy-900 mb-4">
               Why Students Choose
-              <HighlightText text=" Beeja Academy" variant="gold" />
+              <HighlightText text=" LMS" variant="gold" />
             </h2>
             <p className="section-subtitle text-academic-slate-600 text-lg max-w-2xl mx-auto">
               We don't just teach code, we build careers and transform lives through comprehensive education

@@ -18,7 +18,7 @@ const PressHours = () => {
   const pressReleases = [
     {
       date: "March 15, 2024",
-      title: "Beeja Academy Launches New AI and Machine Learning Track",
+      title: "LMS Launches New AI and Machine Learning Track",
       content: "Expanding our curriculum to meet industry demands with cutting-edge AI courses designed by leading experts in the field.",
       category: "Product Launch"
     },
@@ -30,7 +30,7 @@ const PressHours = () => {
     },
     {
       date: "January 10, 2024",
-      title: "Beeja Academy Reaches 100,000 Student Milestone",
+      title: "LMS Reaches 100,000 Student Milestone",
       content: "Celebrating our growing community of learners and their remarkable success stories across various industries.",
       category: "Milestone"
     }
@@ -40,19 +40,19 @@ const PressHours = () => {
     {
       icon: <FaHeadset className="text-2xl text-academic-gold-600" />,
       title: "Technical Support",
-      email: "support@beejaacademy.com",
+      email: "support@lms.com",
       description: "Get help with platform issues, course access, and technical difficulties"
     },
     {
       icon: <FaGraduationCap className="text-2xl text-academic-navy-600" />,
       title: "Course Inquiries",
-      email: "courses@beejaacademy.com",
+      email: "courses@lms.com",
       description: "Questions about course content, enrollment, and learning paths"
     },
     {
       icon: <FaNewspaper className="text-2xl text-academic-gold-600" />,
       title: "Media Contact",
-      email: "press@beejaacademy.com",
+      email: "press@lms.com",
       description: "Press inquiries, media kits, and interview requests"
     }
   ];
@@ -109,7 +109,7 @@ const PressHours = () => {
                 <HighlightText text=" Room" variant="gold" />
               </h2>
               <p className="section-subtitle text-academic-slate-600 text-lg mb-8">
-                Welcome to Beeja Academy's Press Room. Find the latest news, press releases, 
+                Welcome to LMS's Press Room. Find the latest news, press releases, 
                 and media resources about our mission to transform education.
               </p>
             </motion.div>
@@ -178,11 +178,11 @@ const PressHours = () => {
                   For media inquiries, interviews, or press materials, please contact our media team.
                 </p>
                 <a 
-                  href="mailto:press@beejaacademy.com"
+                  href="mailto:press@lms.com"
                   className="inline-flex items-center gap-2 text-academic-gold-700 hover:text-academic-gold-800 font-medium transition-colors duration-300"
                 >
                   <FaEnvelope className="text-sm" />
-                  press@beejaacademy.com
+                  press@lms.com
                 </a>
               </div>
             </motion.section>
@@ -333,7 +333,7 @@ const PressHours = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <a 
-                  href="mailto:support@beejaacademy.com"
+                  href="mailto:support@lms.com"
                   className="inline-flex items-center gap-3 bg-academic-gold-500 text-academic-navy-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-academic-gold-400 transition-colors duration-300 shadow-elegant"
                 >
                   <FaEnvelope className="text-sm" />

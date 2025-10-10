@@ -85,14 +85,14 @@ const InstituteService = () => {
       name: "John Smith",
       position: "HR Director, TechCorp",
       company: "TechCorp Solutions",
-      quote: "Beeja Academy has been instrumental in helping us find qualified candidates. Their training quality is exceptional.",
+      quote: "LMS has been instrumental in helping us find qualified candidates. Their training quality is exceptional.",
       rating: 5
     },
     {
       name: "Sarah Johnson",
       position: "CTO, DataSys",
       company: "DataSys Analytics",
-      quote: "The candidates from Beeja Academy are well-prepared and require minimal onboarding. Highly recommended!",
+      quote: "The candidates from LMS are well-prepared and require minimal onboarding. Highly recommended!",
       rating: 5
     }
   ];
@@ -123,7 +123,7 @@ const InstituteService = () => {
 
               <h1 className="classic-heading text-4xl md:text-6xl text-white">
                 Partner with
-                <HighlightText text=" Beeja Academy" variant="gold" />
+                <HighlightText text=" LMS" variant="gold" />
                 <br />
                 for Excellence
               </h1>
@@ -294,7 +294,7 @@ const InstituteService = () => {
             >
               <h2 className="classic-heading text-3xl md:text-4xl text-academic-navy-900">
                 What Employers Get from
-                <HighlightText text=" Beeja Academy" variant="gold" />
+                <HighlightText text=" LMS" variant="gold" />
               </h2>
               <p className="section-subtitle text-academic-slate-600 text-lg">
                 Our comprehensive training programs transform candidates into industry-ready professionals
@@ -456,7 +456,7 @@ const InstituteService = () => {
               <HighlightText text=" Hiring Process?" variant="gold" />
             </h2>
             <p className="section-subtitle text-academic-slate-300 text-lg">
-              Join hundreds of companies that have already partnered with Beeja Academy 
+              Join hundreds of companies that have already partnered with LMS 
               to access top-tier talent and accelerate their growth.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">

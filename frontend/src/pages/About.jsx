@@ -58,7 +58,7 @@ const About = () => {
               </h1>
               
               <p className="section-subtitle text-xl leading-relaxed">
-                At BeejaAcademy, we're revolutionizing education by combining cutting-edge technology 
+                At LMS, we're revolutionizing education by combining cutting-edge technology 
                 with expert instruction to create transformative learning experiences that prepare you for tomorrow's challenges.
               </p>
 
@@ -306,7 +306,7 @@ const About = () => {
                   <h3 className="elegant-heading text-2xl">Our Vision</h3>
                 </div>
                 <p className="text-academic-slate-600 leading-relaxed mb-6">
-                  At Beeja, we aspire to ignite a lifelong passion for learning by providing transformative, 
+                  At LMS, we aspire to ignite a lifelong passion for learning by providing transformative, 
                   accessible, and personalized educational experiences. Through our innovative platform, 
                   we empower learners to unlock their potential and shape a brighter future.
                 </p>
@@ -363,7 +363,7 @@ const About = () => {
               <HighlightText text=" Values" variant="gold" />
             </h2>
             <p className="section-subtitle max-w-3xl mx-auto">
-              The principles that guide everything we do at Beeja Academy
+              The principles that guide everything we do at LMS
             </p>
           </motion.div>
 
@@ -460,7 +460,7 @@ const About = () => {
             className="text-center mb-16"
           >
             <h2 className="classic-heading text-3xl md:text-4xl mb-4">
-              The Beeja
+              The LMS
               <HighlightText text=" Experience" variant="gold" />
             </h2>
             <p className="section-subtitle max-w-3xl mx-auto">
@@ -532,7 +532,7 @@ const About = () => {
               <span className="text-academic-slate-600 text-lg">4.9/5 from 10,000+ reviews</span>
             </div>
             <p className="section-subtitle max-w-3xl mx-auto">
-              Join thousands of successful learners who have transformed their careers with Beeja Academy
+              Join thousands of successful learners who have transformed their careers with LMS
             </p>
           </motion.div>
         </div>

@@ -14,12 +14,12 @@ const Business = () => {
           className="text-center mb-16"
         >
           <h1 className="classic-heading text-4xl md:text-5xl lg:text-6xl mb-6">
-            Beeja for
+            LMS for
             <span className="text-academic-gold-600"> Business</span>
           </h1>
           <p className="section-subtitle text-xl max-w-4xl mx-auto">
             Empower your workforce with cutting-edge skills through our comprehensive business solutions. 
-            Transform your organization's learning culture and drive innovation with Beeja Academy's 
+            Transform your organization's learning culture and drive innovation with LMS's 
             enterprise-grade training programs.
           </p>
         </motion.div>
@@ -143,14 +143,14 @@ const Business = () => {
           </div>
         </motion.section>
 
-        {/* Why Choose Beeja */}
+        {/* Why Choose LMS */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
           className="mb-20"
         >
-          <h2 className="elegant-heading text-center mb-12">Why Choose Beeja for Business?</h2>
+          <h2 className="elegant-heading text-center mb-12">Why Choose LMS for Business?</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="classic-card p-8 text-center hover:shadow-elegant transition-shadow duration-300">
               <div className="w-20 h-20 bg-academic-gold-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -192,7 +192,7 @@ const Business = () => {
                 <span className="text-2xl">💬</span>
               </div>
               <blockquote className="text-xl md:text-2xl italic mb-8 leading-relaxed font-playfair">
-                "Beeja Academy helped us upskill our entire development team in just 6 months. 
+                "LMS helped us upskill our entire development team in just 6 months. 
                 The customized learning paths and hands-on projects were exactly what we needed 
                 to stay competitive in the market."
               </blockquote>
@@ -220,7 +220,7 @@ const Business = () => {
             <h2 className="elegant-heading mb-6">Get Started Today</h2>
             <p className="text-academic-slate-700 text-lg leading-relaxed mb-8 max-w-3xl mx-auto">
               Ready to transform your organization's learning culture? Contact our enterprise team or 
-              schedule a demo to see how Beeja Academy can help your business achieve its goals.
+              schedule a demo to see how LMS can help your business achieve its goals.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
               <div className="flex items-center gap-3 bg-white px-6 py-4 rounded-xl shadow-classic">
@@ -228,10 +228,10 @@ const Business = () => {
                 <div className="text-left">
                   <p className="text-sm font-medium text-academic-slate-600">Email us at</p>
                   <a 
-                    href="mailto:business@beejaacademy.com" 
+                    href="mailto:business@lms.com" 
                     className="text-academic-gold-700 font-bold hover:text-academic-gold-800 transition-colors"
                   >
-                    business@beejaacademy.com
+                    business@lms.com
                   </a>
                 </div>
               </div>

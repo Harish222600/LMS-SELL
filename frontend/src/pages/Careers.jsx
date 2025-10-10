@@ -135,13 +135,13 @@ const Careers = () => {
             className="classic-heading text-center mb-6"
             variants={itemVariants}
           >
-            Why Choose <span className="text-academic-gold-600">Beeja?</span>
+            Why Choose <span className="text-academic-gold-600">LMS?</span>
           </motion.h2>
           <motion.p 
             className="section-subtitle text-center mb-16 max-w-3xl mx-auto"
             variants={itemVariants}
           >
-            We're not just building a company; we're creating the future of education. Here's what makes Beeja special.
+            We're not just building a company; we're creating the future of education. Here's what makes LMS special.
           </motion.p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -285,11 +285,11 @@ const Careers = () => {
                 Ready to join our team? We'd love to hear from you!
               </p>
               <a 
-                href="mailto:careers@beejaacademy.com"
+                href="mailto:careers@lms.com"
                 className="inline-flex items-center gap-4 bg-academic-gold-600 hover:bg-academic-gold-700 text-white px-10 py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-elegant"
               >
                 <FaEnvelope className="w-5 h-5" />
-                careers@beejaacademy.com
+                careers@lms.com
               </a>
             </motion.div>
           </div>

@@ -40,7 +40,7 @@ const Quote = () => {
         {/* Attribution */}
         <div className="mt-12 pt-8 border-t border-academic-gold-400/30">
           <p className="text-academic-gold-300 text-lg font-medium">
-            — Beeja Academy Team
+            — LMS Team
           </p>
           <p className="text-academic-slate-300 text-sm mt-2">
             Committed to Excellence in Education

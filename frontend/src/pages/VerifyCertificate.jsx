@@ -91,7 +91,7 @@ export default function VerifyCertificate() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Verify the authenticity of Beeja Academy certificates with our secure verification system. 
+            Verify the authenticity of LMS certificates with our secure verification system. 
             Enter the certificate ID to confirm its validity and view detailed information.
           </motion.p>
         </div>
@@ -194,7 +194,7 @@ export default function VerifyCertificate() {
                   <HighlightText text=" Successfully" variant="gold" />
                 </h2>
                 <p className="text-academic-slate-600">
-                  This certificate is authentic and has been issued by Beeja Academy
+                  This certificate is authentic and has been issued by LMS
                 </p>
               </div>
 
@@ -278,7 +278,7 @@ export default function VerifyCertificate() {
                   Official Certificate
                 </h3>
                 <p className="text-academic-slate-600">
-                  This is the official certificate issued by Beeja Academy
+                  This is the official certificate issued by LMS
                 </p>
               </div>
               
@@ -307,7 +307,7 @@ export default function VerifyCertificate() {
               <div>
                 <h4 className="font-bold text-academic-navy-900 text-lg mb-2">Security & Authenticity</h4>
                 <p className="text-academic-navy-700 leading-relaxed mb-4">
-                  All Beeja Academy certificates are digitally signed and verified through our secure system. 
+                  All LMS certificates are digitally signed and verified through our secure system. 
                   Each certificate contains unique identifiers that cannot be forged or duplicated.
                 </p>
                 <div className="grid md:grid-cols-3 gap-4 text-sm">

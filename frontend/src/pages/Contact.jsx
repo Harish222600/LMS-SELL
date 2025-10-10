@@ -25,9 +25,9 @@ const contactMethods = [
     icon: FaEnvelope,
     title: "Email Us",
     description: "Get in touch via email",
-    details: "info@beejaacademy.com",
+    details: "info@lms.com",
     action: "Send Email",
-    href: "mailto:info@beejaacademy.com",
+    href: "mailto:info@lms.com",
     color: "bg-blue-500"
   },
   {
@@ -43,9 +43,9 @@ const contactMethods = [
     icon: FaHandshake,
     title: "Partnership",
     description: "Business inquiries",
-    details: "partner@beejaacademy.com",
+    details: "partner@lms.com",
     action: "Partner With Us",
-    href: "mailto:partner@beejaacademy.com",
+    href: "mailto:partner@lms.com",
     color: "bg-purple-500"
   }
 ]

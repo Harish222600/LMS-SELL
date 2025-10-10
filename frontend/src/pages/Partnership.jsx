@@ -123,7 +123,7 @@ const Partnership = () => {
               
               <h1 className="classic-heading text-4xl md:text-6xl text-white">
                 Partner with
-                <HighlightText text=" Beeja Academy" variant="gold" />
+                <HighlightText text=" LMS" variant="gold" />
               </h1>
               
               <p className="section-subtitle text-academic-slate-300 text-xl max-w-4xl mx-auto leading-relaxed">
@@ -257,7 +257,7 @@ const Partnership = () => {
               <HighlightText text=" Partnership" variant="gold" />
             </h2>
             <p className="section-subtitle text-academic-slate-600 text-lg max-w-3xl mx-auto">
-              Discover the advantages of partnering with Beeja Academy and how we can grow together.
+              Discover the advantages of partnering with LMS and how we can grow together.
             </p>
           </motion.div>
 
@@ -347,11 +347,11 @@ const Partnership = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <a 
-                  href="mailto:partnerships@beejaacademy.com"
+                  href="mailto:partnerships@lms.com"
                   className="inline-flex items-center gap-3 bg-academic-gold-500 text-academic-navy-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-academic-gold-400 transition-colors duration-300 shadow-elegant"
                 >
                   <FaEnvelope className="text-sm" />
-                  partnerships@beejaacademy.com
+                  partnerships@lms.com
                 </a>
                 
                 <button className="inline-flex items-center gap-2 border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-academic-navy-900 transition-colors duration-300">

@@ -152,11 +152,11 @@ const ModernNavbar = () => {
               width={40}
               height={12}
               loading="lazy"
-              alt="Beeja Logo"
+              alt="LMS Logo"
               className="w-[24px] xs:w-[28px] sm:w-[32px] md:w-[36px] lg:w-[40px] h-auto transition-all duration-300 hover:brightness-110"
             />
             <span className="text-white font-medium text-[8px] xs:text-[10px] sm:text-xs md:text-sm lg:text-base tracking-wide hidden xs:block">
-              Beeja Academy
+              LMS
             </span>
           </Link>
         </motion.div>

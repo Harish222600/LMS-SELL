@@ -29,10 +29,10 @@ export default function CourseCertificate({ certificateData }) {
       
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
-        <img src={beejaLogo} alt="Beeja Logo" className="h-16" />
+        <img src={beejaLogo} alt="LMS Logo" className="h-16" />
         <div className="text-right">
           <p className="text-sm">Certificate ID:</p>
-          <p className="font-semibold">{certificateData?.certificateId || 'BEEJA-XXXX-XXX'}</p>
+          <p className="font-semibold">{certificateData?.certificateId || 'LMS-XXXX-XXX'}</p>
         </div>
       </div>
 

@@ -164,7 +164,7 @@ export default function InvoiceModal({ order, onClose }) {
               <div class="invoice_info">
                 <div class="i_row">
                   <div class="i_logo">
-                    <h1>BEEJA ACADEMY</h1>
+                    <h1>LMS</h1>
                     <p style="color: var(--academic-gold); font-weight: 600; margin-top: 8px;">Excellence in Education</p>
                   </div>
                   <div class="title">
@@ -291,10 +291,10 @@ export default function InvoiceModal({ order, onClose }) {
                 <div class="main_title">
                   <p>Company Information</p>
                 </div>
-                <p><strong>Beeja Academy</strong> - Excellence in Education<br>
-                Contact: DineshKumar | Phone: +91 9585113955 | Email: dinesh@beejaacademy.com<br>
-                Website: www.beejaacademy.com<br><br>
-                Thank you for choosing Beeja Academy! This is a computer-generated invoice.</p>
+                <p><strong>LMS</strong> - Excellence in Education<br>
+                Contact: DineshKumar | Phone: +91 9585113955 | Email: dinesh@lms.com<br>
+                Website: www.lms.com<br><br>
+                Thank you for choosing LMS! This is a computer-generated invoice.</p>
               </div>
             </div>
           </section>
@@ -344,7 +344,7 @@ export default function InvoiceModal({ order, onClose }) {
           <div className="bg-gradient-to-r from-academic-navy-900 to-academic-navy-800 p-10 rounded-xl text-center relative overflow-hidden">
             <div className="flex items-center justify-center gap-4 mb-6">
               <div className="text-4xl">🎓</div>
-              <div className="text-3xl font-bold text-white font-playfair">Beeja Academy</div>
+              <div className="text-3xl font-bold text-white font-playfair">LMS</div>
             </div>
             <h1 className="text-5xl font-bold text-academic-gold-400 mb-4 tracking-wider font-playfair">INVOICE</h1>
             <p className="text-academic-slate-200 text-lg">
@@ -365,11 +365,11 @@ export default function InvoiceModal({ order, onClose }) {
                   <span className="text-academic-gold-600">🏢</span> Bill From:
                 </h3>
                 <div className="space-y-2">
-                  <p className="font-bold text-academic-navy-900 text-lg">Beeja Academy</p>
+                  <p className="font-bold text-academic-navy-900 text-lg">LMS</p>
                   <p className="text-academic-slate-600">DineshKumar</p>
                   <p className="text-academic-slate-600">📞 +91 9585113955</p>
-                  <p className="text-academic-slate-600">✉️ dinesh@beejaacademy.com</p>
-                  <p className="text-academic-slate-600">🌐 www.beejaacademy.com</p>
+                  <p className="text-academic-slate-600">✉️ dinesh@lms.com</p>
+                  <p className="text-academic-slate-600">🌐 www.lms.com</p>
                 </div>
               </div>
               <div className="classic-card p-6 border-l-4 border-academic-navy-500">
@@ -452,7 +452,7 @@ export default function InvoiceModal({ order, onClose }) {
                     <td className="p-6">
                       <div>
                         <p className="text-academic-navy-900">{order.course?.instructor?.firstName || 'DineshKumar'}</p>
-                        <p className="text-sm text-academic-slate-600">{order.course?.instructor?.email || 'dinesh@beejaacademy.com'}</p>
+                        <p className="text-sm text-academic-slate-600">{order.course?.instructor?.email || 'dinesh@lms.com'}</p>
                       </div>
                     </td>
                     <td className="p-6 text-right">
@@ -476,15 +476,15 @@ export default function InvoiceModal({ order, onClose }) {
           <div className="bg-gradient-to-r from-academic-navy-900 to-academic-navy-800 p-8 rounded-xl text-center border-t-4 border-academic-gold-500">
             <div className="max-w-2xl mx-auto">
               <div className="mb-6">
-                <p className="text-xl font-bold text-white mb-2 font-playfair">Thank you for choosing Beeja Academy!</p>
+                <p className="text-xl font-bold text-white mb-2 font-playfair">Thank you for choosing LMS!</p>
                 <p className="text-academic-slate-200">Your trust in our educational platform means a lot to us.</p>
               </div>
               
               <div className="flex flex-col md:flex-row items-center justify-center gap-6 text-sm">
                 <div className="flex items-center gap-2">
                   <span className="text-academic-gold-400">📧</span>
-                  <a href="mailto:dinesh@beejaacademy.com" className="text-white hover:text-academic-gold-400 transition-colors">
-                    dinesh@beejaacademy.com
+                  <a href="mailto:dinesh@lms.com" className="text-white hover:text-academic-gold-400 transition-colors">
+                    dinesh@lms.com
                   </a>
                 </div>
                 <div className="hidden md:block text-academic-slate-400">|</div>

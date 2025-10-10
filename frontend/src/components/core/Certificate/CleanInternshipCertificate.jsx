@@ -43,7 +43,7 @@ export default function CleanInternshipCertificate({ certificateData }) {
   };
 
   return (
-    <div style={certificateStyle} role="main" aria-label="Enhanced Certificate from Beeja Academy">
+    <div style={certificateStyle} role="main" aria-label="Enhanced Certificate from LMS">
 {/* Watermark */}
       <div style={{
         position: 'absolute',
@@ -60,7 +60,7 @@ export default function CleanInternshipCertificate({ certificateData }) {
       }}>
         <img 
           src="/beejalogo.png" 
-          alt="Beeja Academy Watermark" 
+          alt="LMS Watermark" 
           style={{
             width: '200px',
             height: '200px',
@@ -76,7 +76,7 @@ export default function CleanInternshipCertificate({ certificateData }) {
           letterSpacing: '0.1em',
           opacity: '0.20',
         }}>
-          Beeja Academy
+          LMS
         </div>
       </div>
 
@@ -196,7 +196,7 @@ export default function CleanInternshipCertificate({ certificateData }) {
         }}>
           <img 
             src="/beejalogo.png" 
-            alt="Beeja Academy Logo" 
+            alt="LMS Logo" 
             style={{
               width: '64px',
               height: '70px',
@@ -211,7 +211,7 @@ export default function CleanInternshipCertificate({ certificateData }) {
             userSelect: 'none',
             letterSpacing: '0.05em'
           }}>
-            Beeja Academy
+            LMS
           </div>
         </div>
 
@@ -394,14 +394,14 @@ export default function CleanInternshipCertificate({ certificateData }) {
             color: '#7a6fff',
             letterSpacing: '0.3px'
           }}>
-            www.beejaacademy.com
+            www.lms.com
           </div>
           <div style={{
             fontSize: '0.8rem',
             color: '#666',
             fontWeight: '500'
           }}>
-            info@beejaacademy.com
+            info@lms.com
           </div>
         </div>
 

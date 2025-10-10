@@ -15,7 +15,7 @@ const Testimonials = () => {
       role: "Web Developer",
       company: "TechCorp Solutions",
       image: "https://api.dicebear.com/6.x/avataaars/svg?seed=Priya",
-      content: "The courses at Beeja Academy transformed my career. The practical approach and industry-relevant curriculum helped me land my dream job as a web developer. The instructors are highly knowledgeable and supportive.",
+      content: "The courses at LMS transformed my career. The practical approach and industry-relevant curriculum helped me land my dream job as a web developer. The instructors are highly knowledgeable and supportive.",
       rating: 5,
       course: "Full Stack Development",
       category: "development",
@@ -278,7 +278,7 @@ const Testimonials = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Discover how Beeja Academy has helped thousands of students transform their careers and achieve their dreams 
+            Discover how LMS has helped thousands of students transform their careers and achieve their dreams 
             through world-class education and dedicated mentorship.
           </motion.p>
         </div>
@@ -439,7 +439,7 @@ const Testimonials = () => {
                 <HighlightText text=" Success Story?" variant="gold" />
               </h2>
               <p className="section-subtitle text-academic-slate-300 text-lg leading-relaxed">
-                Join thousands of successful graduates who have transformed their careers with Beeja Academy. 
+                Join thousands of successful graduates who have transformed their careers with LMS. 
                 Start your journey today and become our next success story.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
